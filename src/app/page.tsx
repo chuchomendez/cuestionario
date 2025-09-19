@@ -266,10 +266,22 @@ export default function TeacherEvaluation() {
   )
 }
 
-function StyleImprovement({ style, score, description }: { 
-  style: TeachingStyle, 
-  score: number, 
-  description: string 
+function StyleImprovement({ 
+  primaryStyle, 
+  secondaryStyle, 
+  isCombined, 
+  primaryScore, 
+  secondaryScore, 
+  primaryDescription, 
+  secondaryDescription 
+}: { 
+  primaryStyle: TeachingStyle, 
+  secondaryStyle: TeachingStyle | null,
+  isCombined: boolean,
+  primaryScore: number, 
+  secondaryScore: number,
+  primaryDescription: string,
+  secondaryDescription: string
 }) {
   const improvements = {
     funcional: {
@@ -338,7 +350,126 @@ function StyleImprovement({ style, score, description }: {
     }
   }
 
-  const improvement = improvements[style]
+  // Combinaciones de estilos para propuestas híbridas
+  const combinedImprovements = {
+    'abierto-estructurado': {
+      title: "Estilo de Enseñanza Híbrido: Abierto-Estructurado",
+      overview: "Su perfil combina la flexibilidad y espontaneidad del estilo abierto con la coherencia y lógica del estilo estructurado. Esto le permite ser creativo e innovador mientras mantiene un marco organizativo sólido para el aprendizaje.",
+      methodologies: [
+        {
+          name: "Design Thinking Estructurado",
+          description: "Combine la metodología de Design Thinking (del estilo abierto) con fases bien definidas y documentadas (del estilo estructurado). Los estudiantes pueden explorar soluciones creativas para algoritmos siguiendo un proceso sistemático de ideación, prototipado y validación."
+        },
+        {
+          name: "Hackatones con Marco Teórico",
+          description: "Organice hackatones donde los estudiantes trabajen libremente en equipos, pero requiera que fundamenten sus soluciones algorítmicas con análisis teórico riguroso. Esto combina la creatividad espontánea con el análisis sistemático."
+        },
+        {
+          name: "Aprendizaje Basado en Casos Creativos",
+          description: "Presente casos complejos que requieran análisis estructurado, pero permita múltiples enfoques creativos para la solución. Los estudiantes deben justificar lógicamente sus propuestas innovadoras."
+        }
+      ],
+      example: {
+        title: "Ejemplo de aplicación híbrida:",
+        content: "Organice un 'Algoritmo Challenge' donde los equipos tengan libertad creativa para abordar un problema real (ej: optimización de tráfico urbano), pero deben seguir fases estructuradas: 1) Análisis teórico del problema, 2) Diseño creativo de la solución, 3) Implementación con justificación lógica, 4) Evaluación sistemática de resultados. Esto permite la espontaneidad del estilo abierto dentro del marco lógico del estilo estructurado."
+      }
+    },
+    'abierto-formal': {
+      title: "Estilo de Enseñanza Híbrido: Abierto-Formal",
+      overview: "Su perfil combina la creatividad y flexibilidad del estilo abierto con la planificación detallada y reflexión profunda del estilo formal. Esto le permite ser innovador mientras mantiene rigor académico.",
+      methodologies: [
+        {
+          name: "Clase Invertida con Debates Creativos",
+          description: "Combine la planificación rigurosa del material teórico (formal) con sesiones de clase abiertas para debates espontáneos y exploración creativa de conceptos algorítmicos."
+        },
+        {
+          name: "Proyectos Guiados con Exploración Libre",
+          description: "Estructure proyectos con objetivos claros y planificación detallada, pero permita a los estudiantes explorar libremente diferentes enfoques y soluciones creativas."
+        }
+      ],
+      example: {
+        title: "Ejemplo de aplicación híbrida:",
+        content: "Planifique detalladamente un curso sobre estructuras de datos, pero en cada módulo incluya 'sesiones de exploración libre' donde los estudiantes puedan proponer aplicaciones creativas e innovadoras de las estructuras estudiadas."
+      }
+    },
+    'abierto-funcional': {
+      title: "Estilo de Enseñanza Híbrido: Abierto-Funcional",
+      overview: "Su perfil combina la creatividad y espontaneidad del estilo abierto con el enfoque práctico y aplicado del estilo funcional. Esto resulta en un enfoque muy dinámico y orientado a resultados prácticos.",
+      methodologies: [
+        {
+          name: "Hackatones Orientados a Soluciones Reales",
+          description: "Organice eventos creativos y espontáneos enfocados en resolver problemas prácticos del mundo real usando algoritmos. Combine la libertad creativa con la utilidad práctica."
+        },
+        {
+          name: "Gamificación con Proyectos Aplicados",
+          description: "Use elementos de juego y competencia sana, pero siempre orientados hacia la creación de soluciones algorítmicas que tengan aplicación práctica inmediata."
+        }
+      ],
+      example: {
+        title: "Ejemplo de aplicación híbrida:",
+        content: "Realice 'Innovation Sprints' donde los equipos tienen libertad total para crear algoritmos innovadores que resuelvan problemas específicos de empresas locales, combinando creatividad sin límites con aplicabilidad práctica."
+      }
+    },
+    'formal-estructurado': {
+      title: "Estilo de Enseñanza Híbrido: Formal-Estructurado",
+      overview: "Su perfil combina la planificación rigurosa y reflexión profunda del estilo formal con la lógica sistemática del estilo estructurado. Esto resulta en un enfoque muy académico y fundamentado.",
+      methodologies: [
+        {
+          name: "Análisis de Casos con Fundamentación Teórica Profunda",
+          description: "Combine el análisis sistemático de casos complejos con sesiones de reflexión profunda sobre los fundamentos teóricos, permitiendo a los estudiantes desarrollar comprensión tanto práctica como conceptual."
+        },
+        {
+          name: "Clase Invertida con Marco Lógico",
+          description: "Use la metodología de clase invertida pero con un enfoque muy estructurado, donde cada elemento teórico se conecta lógicamente con el siguiente en un marco coherente."
+        }
+      ],
+      example: {
+        title: "Ejemplo de aplicación híbrida:",
+        content: "Desarrolle un curso donde los estudiantes estudien en profundidad la teoría de complejidad algorítmica (formal) y luego analicen sistemáticamente casos reales de optimización, conectando cada concepto teórico con aplicaciones lógicamente estructuradas."
+      }
+    },
+    'formal-funcional': {
+      title: "Estilo de Enseñanza Híbrido: Formal-Funcional",
+      overview: "Su perfil combina la reflexión profunda y planificación detallada del estilo formal con el enfoque práctico del estilo funcional. Esto resulta en un balance entre rigor académico y aplicabilidad.",
+      methodologies: [
+        {
+          name: "Clase Invertida con Proyectos Aplicados",
+          description: "Combine la preparación teórica rigurosa fuera del aula con tiempo de clase dedicado a proyectos prácticos que apliquen directamente los conceptos estudiados."
+        },
+        {
+          name: "Análisis Reflexivo de Implementaciones Prácticas",
+          description: "Alterne entre sesiones de reflexión profunda sobre algoritmos y sesiones prácticas de implementación, asegurando que cada aplicación esté bien fundamentada teóricamente."
+        }
+      ],
+      example: {
+        title: "Ejemplo de aplicación híbrida:",
+        content: "Los estudiantes estudian en profundidad la teoría de grafos, luego implementan algoritmos de grafos para resolver problemas reales como optimización de redes sociales, siempre reflexionando sobre la conexión teoría-práctica."
+      }
+    },
+    'estructurado-funcional': {
+      title: "Estilo de Enseñanza Híbrido: Estructurado-Funcional",
+      overview: "Su perfil combina el análisis lógico y sistemático del estilo estructurado con el enfoque práctico y aplicado del estilo funcional. Esto resulta en un enfoque muy efectivo para la resolución de problemas.",
+      methodologies: [
+        {
+          name: "Aprendizaje Basado en Problemas Estructurado",
+          description: "Use problemas reales y prácticos, pero abórdelos de manera sistemática y lógica, asegurando que cada paso del proceso de solución esté bien fundamentado y documentado."
+        },
+        {
+          name: "Gamificación con Análisis Sistemático",
+          description: "Implemente elementos de juego para mantener la motivación práctica, pero requiera que los estudiantes analicen sistemáticamente sus estrategias y resultados."
+        }
+      ],
+      example: {
+        title: "Ejemplo de aplicación híbrida:",
+        content: "Presente el desafío práctico de optimizar un algoritmo de recomendaciones, pero guíe a los estudiantes a través de un análisis sistemático de diferentes enfoques, evaluando lógicamente pros y contras antes de implementar la solución más viable."
+      }
+    }
+  }
+
+  const improvement = isCombined 
+    ? combinedImprovements[`${primaryStyle}-${secondaryStyle}` as keyof typeof combinedImprovements] || combinedImprovements[`${secondaryStyle}-${primaryStyle}` as keyof typeof combinedImprovements]
+    : improvements[primaryStyle]
+
   const getStyleColor = () => {
     const colors = {
       funcional: 'orange',
@@ -346,7 +477,7 @@ function StyleImprovement({ style, score, description }: {
       formal: 'green',
       estructurado: 'purple'
     }
-    return colors[style]
+    return isCombined ? 'indigo' : colors[primaryStyle]
   }
 
   const color = getStyleColor()
@@ -360,17 +491,27 @@ function StyleImprovement({ style, score, description }: {
         <p className={`text-${color}-700 leading-relaxed mb-4`}>
           {improvement.overview}
         </p>
-        <div className={`text-sm text-${color}-600 flex items-center gap-2`}>
-          <span className="font-medium">Tu puntuación:</span>
-          <span className="font-bold">{score}/20</span>
-          <span>•</span>
-          <span>{description}</span>
+        <div className={`text-sm text-${color}-600 flex items-center gap-4 flex-wrap`}>
+          <div className="flex items-center gap-2">
+            <span className="font-medium">Estilo primario:</span>
+            <span className="font-bold">{primaryScore}/20</span>
+            <span>•</span>
+            <span>{primaryDescription}</span>
+          </div>
+          {isCombined && secondaryStyle && (
+            <div className="flex items-center gap-2">
+              <span className="font-medium">Estilo secundario:</span>
+              <span className="font-bold">{secondaryScore}/20</span>
+              <span>•</span>
+              <span>{secondaryDescription}</span>
+            </div>
+          )}
         </div>
       </div>
 
       <div className="space-y-4">
         <h4 className="text-lg font-semibold text-gray-800">
-          Metodologías Activas Recomendadas:
+          {isCombined ? 'Metodologías Híbridas Recomendadas:' : 'Metodologías Activas Recomendadas:'}
         </h4>
         
         {improvement.methodologies.map((methodology, index) => (
