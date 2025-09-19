@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { TrendingUp } from "lucide-react"
+import { TrendingUp, X, Check } from "lucide-react"
 import { RadarChart, PolarGrid, PolarAngleAxis, Radar, Tooltip, ResponsiveContainer } from 'recharts'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
@@ -51,8 +51,8 @@ const styleRanges: StyleRanges = {
     { min: 0, max: 8, description: "Preferencia Muy Baja", percentage: "10%" },
     { min: 9, max: 10, description: "Preferencia Baja", percentage: "20%" },
     { min: 11, max: 13, description: "Preferencia Moderada", percentage: "40%" },
-    { min: 14, max: 13, description: "Preferencia Alta", percentage: "20%" },
-    { min: 14, max: 20, description: "Preferencia Muy Alta", percentage: "10%" }
+    { min: 14, max: 15, description: "Preferencia Alta", percentage: "20%" },
+    { min: 16, max: 20, description: "Preferencia Muy Alta", percentage: "10%" }
   ],
   funcional: [
     { min: 0, max: 11, description: "Preferencia Muy Baja", percentage: "10%" },
@@ -145,123 +145,136 @@ const questions: Question[] = [
   { id: 78, text: "Suelo preguntar en clase, incluso sin haberlo anunciado.", style: "abierto" },
   { id: 79, text: "En ejercicios y trabajos de los estudiantes no valoro ni califico ni doy importancia a la presentación, el orden y los detalles.", style: "abierto" },
   { id: 80, text: "De una planificación me interesa como se va a llevar a la práctica y si es viable.", style: "funcional" }
- 
+
 ]
 
-export default function TeacherEvaluation() {
-  const [currentPage, setCurrentPage] = useState(0)
-  const [answers, setAnswers] = useState<Answer[]>([])
-  const [showResults, setShowResults] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-
-  const questionsPerPage = 10
-  const totalPages = Math.ceil(questions.length / questionsPerPage)
-
-  const handleAnswer = (questionId: number, answer: 'SÍ' | 'NO') => {
-    setAnswers(prev => {
-      const newAnswers = prev.filter(a => a.questionId !== questionId)
-      return [...newAnswers, { questionId, answer }]
-    })
-    setError(null)
-  }
-
-  const currentQuestions = questions.slice(
-    currentPage * questionsPerPage,
-    (currentPage + 1) * questionsPerPage
+function QuestionCard({ question, questionNumber, selectedAnswer, onAnswer }: {
+  question: Question
+  questionNumber: number
+  selectedAnswer: 'SÍ' | 'NO' | undefined
+  onAnswer: (questionId: number, answer: 'SÍ' | 'NO') => void
+}) {
+  return (
+    <Card className="mb-4 shadow-sm">
+      <CardHeader>
+        <CardTitle className="text-lg font-semibold text-gray-700">
+          Pregunta {questionNumber}:
+        </CardTitle>
+        <CardDescription className="text-gray-900 font-medium text-base leading-relaxed">
+          {question.text}
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="flex justify-start gap-4 p-4 pt-0">
+        <Button
+          variant={selectedAnswer === 'SÍ' ? 'default' : 'outline'}
+          onClick={() => onAnswer(question.id, 'SÍ')}
+          className="w-24 flex items-center justify-center gap-2"
+        >
+          {selectedAnswer === 'SÍ' && <Check className="h-4 w-4" />} SÍ
+        </Button>
+        <Button
+          variant={selectedAnswer === 'NO' ? 'destructive' : 'outline'}
+          onClick={() => onAnswer(question.id, 'NO')}
+          className="w-24 flex items-center justify-center gap-2"
+        >
+          {selectedAnswer === 'NO' && <X className="h-4 w-4" />} NO
+        </Button>
+      </CardContent>
+    </Card>
   )
+}
 
-  const nextPage = () => {
-    const unansweredQuestions = currentQuestions.filter(
-      question => !answers.some(answer => answer.questionId === question.id)
-    )
+function ResultsPage({ answers, questions }: { answers: Answer[], questions: Question[] }) {
+  const calculateScores = () => {
+    const scores: Record<TeachingStyle, number> = {
+      abierto: 0,
+      formal: 0,
+      estructurado: 0,
+      funcional: 0
+    };
 
-    if (unansweredQuestions.length > 0) {
-      setError(`Por favor, responde todas las preguntas antes de continuar.`)
-      return
-    }
-
-    setError(null)
-
-    if (currentPage < totalPages - 1) {
-      setCurrentPage(prev => prev + 1)
-    } else {
-      if (answers.length === questions.length) {
-        setShowResults(true)
-      } else {
-        setError('Por favor, responde todas las preguntas antes de ver los resultados.')
+    answers.forEach(answer => {
+      const question = questions.find(q => q.id === answer.questionId);
+      if (question && answer.answer === 'SÍ') {
+        scores[question.style] += 1;
       }
-    }
-  }
+    });
 
-  const prevPage = () => {
-    if (currentPage > 0) {
-      setCurrentPage(prev => prev - 1)
-      setError(null)
-    }
-  }
+    return scores;
+  };
 
-  if (showResults) {
-    return <ResultsPage answers={answers} questions={questions} />
-  }
+  const scores = calculateScores();
+  const sortedStyles = Object.keys(scores).sort((a, b) => scores[b as TeachingStyle] - scores[a as TeachingStyle]) as TeachingStyle[];
+  const primaryStyle = sortedStyles[0];
+  const secondaryStyle = sortedStyles[1];
+  const primaryScore = scores[primaryStyle];
+  const secondaryScore = scores[secondaryStyle];
+
+  const isCombined = secondaryScore > 13;
+
+  const getRangeDescription = (style: TeachingStyle, score: number) => {
+    const range = styleRanges[style].find(r => score >= r.min && score <= r.max);
+    return range ? range.description : 'Puntuación no definida';
+  };
+
+  const primaryDescription = getRangeDescription(primaryStyle, primaryScore);
+  const secondaryDescription = getRangeDescription(secondaryStyle, secondaryScore);
+  
+  const chartData = Object.entries(scores).map(([style, score]) => ({
+    style: style.charAt(0).toUpperCase() + style.slice(1),
+    score: score
+  }));
+  
+  const formattedSecondaryStyle = isCombined ? secondaryStyle : null;
+  const formattedPrimaryScore = primaryScore;
+  const formattedSecondaryScore = secondaryScore;
 
   return (
     <div className="container mx-auto p-4 max-w-4xl">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold mb-2 text-gray-800">Evaluación del Estilo de Enseñanza</h1>
-        <p className="text-gray-600">Responde con sinceridad a cada pregunta</p>
+        <h1 className="text-3xl font-bold mb-2 text-gray-800">Resultados del Test</h1>
+        <p className="text-gray-600">Descubre tu Estilo de Enseñanza</p>
       </div>
+
+      <Card className="mb-6 shadow-md">
+        <CardHeader>
+          <CardTitle className="text-center text-2xl">
+            Tu Estilo de Enseñanza
+          </CardTitle>
+          <CardDescription className="text-center text-lg mt-2">
+            Tu perfil dominante es **{primaryStyle.toUpperCase()}** con una puntuación de **{primaryScore}**.
+            {isCombined && (
+              <>
+                <br />
+                Tu perfil secundario es **{secondaryStyle.toUpperCase()}** con una puntuación de **{secondaryScore}**.
+                Esto indica un perfil híbrido.
+              </>
+            )}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="w-full h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <RadarChart cx="50%" cy="50%" outerRadius="80%" data={chartData}>
+                <PolarGrid />
+                <PolarAngleAxis dataKey="style" />
+                <Radar name="Puntuación" dataKey="score" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+                <Tooltip />
+              </RadarChart>
+            </ResponsiveContainer>
+          </div>
+        </CardContent>
+      </Card>
       
-      <div className="mb-6">
-        <div className="flex justify-between text-sm text-gray-600 mb-2">
-          <span>Progreso</span>
-          <span>Página {currentPage + 1} de {totalPages}</span>
-        </div>
-        <Progress value={(currentPage + 1) / totalPages * 100} className="h-2" />
-      </div>
-
-      {error && (
-        <Alert variant="destructive" className="mb-4">
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
-
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentPage}
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -50 }}
-          transition={{ duration: 0.3 }}
-        >
-          {currentQuestions.map((question, index) => (
-            <QuestionCard
-              key={question.id}
-              question={question}
-              questionNumber={currentPage * questionsPerPage + index + 1}
-              selectedAnswer={answers.find(a => a.questionId === question.id)?.answer}
-              onAnswer={handleAnswer}
-            />
-          ))}
-        </motion.div>
-      </AnimatePresence>
-
-      <div className="flex justify-between mt-8">
-        <Button 
-          onClick={prevPage} 
-          disabled={currentPage === 0}
-          variant="outline"
-          className="px-6"
-        >
-          ← Anterior
-        </Button>
-        <Button 
-          onClick={nextPage}
-          className="px-6"
-        >
-          {currentPage === totalPages - 1 ? 'Ver Resultados →' : 'Siguiente →'}
-        </Button>
-      </div>
+      <StyleImprovement
+        primaryStyle={primaryStyle}
+        secondaryStyle={formattedSecondaryStyle}
+        isCombined={isCombined}
+        primaryScore={formattedPrimaryScore}
+        secondaryScore={formattedSecondaryScore}
+        primaryDescription={primaryDescription}
+        secondaryDescription={secondaryDescription}
+      />
     </div>
   )
 }
@@ -461,381 +474,213 @@ function StyleImprovement({
       ],
       example: {
         title: "Ejemplo de aplicación híbrida:",
-        content: "Presente el desafío práctico de optimizar un algoritmo de recomendaciones, pero guíe a los estudiantes a través de un análisis sistemático de diferentes enfoques, evaluando lógicamente pros y contras antes de implementar la solución más viable."
+        content: "Organice un 'Algoritmo Sprint' donde los equipos resuelven problemas prácticos, pero deben presentar una documentación detallada y lógica de su solución en cada fase del proceso."
       }
     }
   }
 
-  const improvement = isCombined 
-    ? combinedImprovements[`${primaryStyle}-${secondaryStyle}` as keyof typeof combinedImprovements] || combinedImprovements[`${secondaryStyle}-${primaryStyle}` as keyof typeof combinedImprovements]
-    : improvements[primaryStyle]
-
-  const getStyleColor = () => {
-    const colors = {
-      funcional: 'orange',
-      abierto: 'blue', 
-      formal: 'green',
-      estructurado: 'purple'
-    }
-    return isCombined ? 'indigo' : colors[primaryStyle]
-  }
-
-  const color = getStyleColor()
-
-  return (
-    <div className="space-y-6">
-      <div className={`bg-${color}-50 border border-${color}-200 rounded-lg p-6`}>
-        <h3 className={`text-xl font-bold text-${color}-800 mb-3`}>
-          {improvement.title}
-        </h3>
-        <p className={`text-${color}-700 leading-relaxed mb-4`}>
-          {improvement.overview}
-        </p>
-        <div className={`text-sm text-${color}-600 flex items-center gap-4 flex-wrap`}>
-          <div className="flex items-center gap-2">
-            <span className="font-medium">Estilo primario:</span>
-            <span className="font-bold">{primaryScore}/20</span>
-            <span>•</span>
-            <span>{primaryDescription}</span>
-          </div>
-          {isCombined && secondaryStyle && (
-            <div className="flex items-center gap-2">
-              <span className="font-medium">Estilo secundario:</span>
-              <span className="font-bold">{secondaryScore}/20</span>
-              <span>•</span>
-              <span>{secondaryDescription}</span>
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div className="space-y-4">
-        <h4 className="text-lg font-semibold text-gray-800">
-          {isCombined ? 'Metodologías Híbridas Recomendadas:' : 'Metodologías Activas Recomendadas:'}
-        </h4>
-        
-        {improvement.methodologies.map((methodology, index) => (
-          <Card key={index} className="border-l-4 border-l-blue-500">
-            <CardContent className="p-4">
-              <h5 className="font-semibold text-blue-800 mb-2">
-                {methodology.name}
-              </h5>
-              <p className="text-gray-700 text-sm leading-relaxed">
-                {methodology.description}
-              </p>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      <Card className={`bg-gradient-to-r from-${color}-100 to-${color}-50 border-${color}-200`}>
-        <CardContent className="p-5">
-          <h5 className={`font-bold text-${color}-800 mb-3`}>
-            {improvement.example.title}
-          </h5>
-          <p className={`text-${color}-700 text-sm leading-relaxed italic`}>
-            {improvement.example.content}
-          </p>
+  const primaryInfo = improvements[primaryStyle];
+  
+  if (!primaryInfo) {
+    return (
+      <Card className="mt-8">
+        <CardHeader>
+          <CardTitle>Análisis de Estilo</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p>No se encontraron datos de mejora para el estilo dominante. Por favor, revisa la configuración.</p>
         </CardContent>
       </Card>
-    </div>
-  )
-}
+    );
+  }
 
-function QuestionCard({ question, questionNumber, selectedAnswer, onAnswer }: {
-  question: Question
-  questionNumber: number
-  selectedAnswer?: 'SÍ' | 'NO'
-  onAnswer: (questionId: number, answer: 'SÍ' | 'NO') => void
-}) {
+  const isHighScore = primaryScore >= 14 || secondaryScore >= 14;
+
+  const getCombinedInfo = () => {
+    if (!secondaryStyle) return null;
+    const key = `${primaryStyle}-${secondaryStyle}` as keyof typeof combinedImprovements;
+    return combinedImprovements[key] || combinedImprovements[`${secondaryStyle}-${primaryStyle}` as keyof typeof combinedImprovements] || null;
+  };
+
+  const combinedInfo = getCombinedInfo();
+
   return (
-    <Card className={`mb-4 transition-all duration-200 ${selectedAnswer ? 'border-blue-300 shadow-md' : 'border-gray-200'}`}>
-      <CardContent className="p-6">
-        <div className="flex items-start gap-4">
-          <div className="flex-shrink-0 w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-sm font-semibold">
-            {questionNumber}
-          </div>
-          <div className="flex-1">
-            <h2 className="text-lg font-medium mb-4 text-gray-800 leading-relaxed">
-              {question.text}
+    <Card className="mt-8 shadow-md">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <TrendingUp className="h-6 w-6 text-green-500" />
+          Mejora tu Estilo de Enseñanza
+        </CardTitle>
+        <CardDescription>
+          Aquí tienes una guía personalizada para potenciar tus habilidades.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        {isCombined && combinedInfo ? (
+          <>
+            <h2 className="text-xl font-semibold text-gray-800 border-b pb-2">
+              {combinedInfo.title}
             </h2>
-            <div className="flex gap-3">
-              <Button
-                variant={selectedAnswer === 'SÍ' ? "default" : "outline"}
-                onClick={() => onAnswer(question.id, 'SÍ')}
-                className={`flex-1 py-3 transition-all duration-200 ${
-                  selectedAnswer === 'SÍ' 
-                    ? 'bg-green-600 hover:bg-green-700 border-green-600' 
-                    : 'hover:border-green-300 hover:text-green-600'
-                }`}
-              >
-                SÍ
-              </Button>
-              <Button
-                variant={selectedAnswer === 'NO' ? "default" : "outline"}
-                onClick={() => onAnswer(question.id, 'NO')}
-                className={`flex-1 py-3 transition-all duration-200 ${
-                  selectedAnswer === 'NO' 
-                    ? 'bg-red-600 hover:bg-red-700 border-red-600' 
-                    : 'hover:border-red-300 hover:text-red-600'
-                }`}
-              >
-                NO
-              </Button>
+            <p className="text-gray-700">{combinedInfo.overview}</p>
+
+            <h3 className="text-lg font-semibold text-gray-800 mt-4">Metodologías Híbridas Sugeridas:</h3>
+            <div className="grid md:grid-cols-2 gap-4">
+              {combinedInfo.methodologies.map((method, index) => (
+                <Card key={index} className="p-4 bg-gray-50 border-l-4 border-blue-500">
+                  <h4 className="font-bold text-lg text-blue-700">{method.name}</h4>
+                  <p className="text-sm text-gray-600 mt-1">{method.description}</p>
+                </Card>
+              ))}
             </div>
-          </div>
-        </div>
+
+            {combinedInfo.example && (
+              <Card className="mt-4 p-4 bg-blue-50 border-l-4 border-blue-500">
+                <h4 className="font-bold text-lg text-blue-700">{combinedInfo.example.title}</h4>
+                <p className="text-sm text-gray-600 mt-1">{combinedInfo.example.content}</p>
+              </Card>
+            )}
+          </>
+        ) : (
+          <>
+            <h2 className="text-xl font-semibold text-gray-800 border-b pb-2">
+              {primaryInfo.title}
+            </h2>
+            <p className="text-gray-700">{primaryInfo.overview}</p>
+
+            <h3 className="text-lg font-semibold text-gray-800 mt-4">Metodologías Sugeridas:</h3>
+            <div className="grid md:grid-cols-2 gap-4">
+              {primaryInfo.methodologies.map((method, index) => (
+                <Card key={index} className="p-4 bg-gray-50 border-l-4 border-blue-500">
+                  <h4 className="font-bold text-lg text-blue-700">{method.name}</h4>
+                  <p className="text-sm text-gray-600 mt-1">{method.description}</p>
+                </Card>
+              ))}
+            </div>
+
+            {primaryInfo.example && (
+              <Card className="mt-4 p-4 bg-blue-50 border-l-4 border-blue-500">
+                <h4 className="font-bold text-lg text-blue-700">{primaryInfo.example.title}</h4>
+                <p className="text-sm text-gray-600 mt-1">{primaryInfo.example.content}</p>
+              </Card>
+            )}
+          </>
+        )}
       </CardContent>
     </Card>
   )
 }
+export default function TeacherEvaluation() {
+  const [currentPage, setCurrentPage] = useState(0)
+  const [answers, setAnswers] = useState<Answer[]>([])
+  const [showResults, setShowResults] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-function ResultsPage({ answers, questions }: { answers: Answer[], questions: Question[] }) {
-  const calculateStyleScores = () => {
-    const styleCounts: Record<TeachingStyle, number> = {
-      abierto: 0,                                              
-      formal: 0,
-      estructurado: 0,
-      funcional: 0
-    }
+  const questionsPerPage = 10
+  const totalPages = Math.ceil(questions.length / questionsPerPage)
 
-    questions.forEach(question => {
-      const answer = answers.find(a => a.questionId === question.id)
-      if (answer?.answer === 'SÍ') {
-        styleCounts[question.style]++
-      }
+  const handleAnswer = (questionId: number, answer: 'SÍ' | 'NO') => {
+    setAnswers(prev => {
+      const newAnswers = prev.filter(a => a.questionId !== questionId)
+      return [...newAnswers, { questionId, answer }]
     })
-
-    return Object.entries(styleCounts).reduce((acc, [style, count]) => {
-      const range = styleRanges[style as TeachingStyle].find(r => count >= r.min && count <= r.max)
-      acc[style as TeachingStyle] = {
-        score: count,
-        description: range ? range.description : "No hay descripción disponible",
-        percentage: range ? range.percentage : "N/A"
-      }
-      return acc
-    }, {} as Record<TeachingStyle, { score: number; description: string; percentage: string }>)
+    setError(null)
   }
 
-  const styleScores = calculateStyleScores()
+  const currentQuestions = questions.slice(
+    currentPage * questionsPerPage,
+    (currentPage + 1) * questionsPerPage
+  )
 
-  const chartData = Object.entries(styleScores).map(([style, data]) => ({
-    style: style.charAt(0).toUpperCase() + style.slice(1),
-    value: data.score
-  }))
+  const nextPage = () => {
+    const unansweredQuestions = currentQuestions.filter(
+      question => !answers.some(answer => answer.questionId === question.id)
+    )
 
-  // Determinar estilo(s) predominante(s)
-  const getDominantStyles = () => {
-    const sortedStyles = Object.entries(styleScores).sort((a, b) => b[1].score - a[1].score)
-    const highestScore = sortedStyles[0][1].score
-    const dominantStyles = sortedStyles.filter(([_, data]) => data.score === highestScore)
-    
-    if (dominantStyles.length === 1) {
-      return {
-        primary: dominantStyles[0][0],
-        secondary: null,
-        isCombined: false
-      }
-    } else if (dominantStyles.length === 2) {
-      return {
-        primary: dominantStyles[0][0],
-        secondary: dominantStyles[1][0],
-        isCombined: true
-      }
+    if (unansweredQuestions.length > 0) {
+      setError(`Por favor, responde todas las preguntas antes de continuar.`)
+      return
+    }
+
+    setError(null)
+
+    if (currentPage < totalPages - 1) {
+      setCurrentPage(prev => prev + 1)
     } else {
-      // Si hay más de 2 estilos empatados, tomar los dos primeros
-      return {
-        primary: dominantStyles[0][0],
-        secondary: dominantStyles[1][0],
-        isCombined: true
+      if (answers.length === questions.length) {
+        setShowResults(true)
+      } else {
+        setError('Por favor, responde todas las preguntas antes de ver los resultados.')
       }
     }
   }
 
-  const dominantStyleInfo = getDominantStyles()
-  const dominantStyle = dominantStyleInfo.primary
-
-  const getColorForStyle = (style: string, score: number) => {
-    const colors = {
-      abierto: { bg: 'bg-blue-50', border: 'border-blue-200', text: 'text-blue-700' },
-      formal: { bg: 'bg-green-50', border: 'border-green-200', text: 'text-green-700' },
-      estructurado: { bg: 'bg-purple-50', border: 'border-purple-200', text: 'text-purple-700' },
-      funcional: { bg: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-700' }
+  const prevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(prev => prev - 1)
+      setError(null)
     }
-    return colors[style as keyof typeof colors] || colors.abierto
+  }
+
+  if (showResults) {
+    return <ResultsPage answers={answers} questions={questions} />
   }
 
   return (
-    <div className="container mx-auto p-4 max-w-6xl">
+    <div className="container mx-auto p-4 max-w-4xl">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold mb-2 text-gray-800">Resultados de la Evaluación</h1>
-        <p className="text-gray-600">Análisis de tu estilo de enseñanza predominante</p>
+        <h1 className="text-3xl font-bold mb-2 text-gray-800">Evaluación del Estilo de Enseñanza</h1>
+        <p className="text-gray-600">Responde con sinceridad a cada pregunta</p>
       </div>
-
-      <Card className="mb-8">
-        <CardHeader className="text-center pb-4">
-          <CardTitle className="text-2xl">Radar de Estilos de Enseñanza</CardTitle>
-          <CardDescription>
-            Distribución de puntuaciones según el nuevo baremo actualizado
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="pb-0">
-          <ResponsiveContainer width="100%" height={450}>
-            <RadarChart data={chartData}>
-              <PolarGrid stroke="#e5e7eb" />
-              <PolarAngleAxis 
-                dataKey="style" 
-                tick={{ fontSize: 12, fill: '#374151' }}
-                className="font-medium"
-              />
-              <Radar 
-                name="Puntuación" 
-                dataKey="value" 
-                stroke="#3b82f6" 
-                fill="#3b82f6" 
-                fillOpacity={0.3}
-                strokeWidth={2}
-              />
-              <Tooltip 
-                contentStyle={{
-                  backgroundColor: '#f9fafb',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '8px',
-                  fontSize: '14px'
-                }}
-              />
-            </RadarChart>
-          </ResponsiveContainer>
-        </CardContent>
-        <CardFooter className="flex-col gap-2 text-center">
-          <div className="flex items-center gap-2 font-semibold text-lg text-gray-800">
-            <TrendingUp className="h-5 w-5 text-blue-600" />
-            {dominantStyleInfo.isCombined ? (
-              <>
-                Estilos Predominantes: {dominantStyle.charAt(0).toUpperCase() + dominantStyle.slice(1)} - {dominantStyleInfo.secondary!.charAt(0).toUpperCase() + dominantStyleInfo.secondary!.slice(1)}
-                <span className="text-xs bg-purple-600 text-white px-2 py-1 rounded-full ml-2">
-                  COMBINADO
-                </span>
-              </>
-            ) : (
-              <>
-                Estilo Predominante: {dominantStyle.charAt(0).toUpperCase() + dominantStyle.slice(1)}
-              </>
-            )}
-          </div>
-          <div className="text-sm text-gray-600">
-            {dominantStyleInfo.isCombined ? (
-              <>
-                Puntuación: {styleScores[dominantStyle as TeachingStyle].score} puntos cada uno |
-                Perfil híbrido con características mixtas
-              </>
-            ) : (
-              <>
-                Puntuación: {styleScores[dominantStyle as TeachingStyle].score} | 
-                {styleScores[dominantStyle as TeachingStyle].description}
-              </>
-            )}
-          </div>
-        </CardFooter>
-      </Card>
-
-      <h2 className="text-2xl font-semibold mb-6 text-gray-800">Análisis Detallado por Estilo</h2>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {Object.entries(styleScores).map(([style, data]) => {
-          const colors = getColorForStyle(style, data.score)
-          const isPrimary = style === dominantStyle
-          const isSecondary = style === dominantStyleInfo.secondary
-          const isDominant = isPrimary || isSecondary
-          
-          return (
-            <Card key={style} className={`${colors.bg} ${colors.border} border-2 ${isDominant ? 'ring-2 ring-blue-300' : ''}`}>
-              <CardHeader className="pb-3">
-                <CardTitle className={`${colors.text} text-xl flex items-center justify-between`}>
-                  {style.charAt(0).toUpperCase() + style.slice(1)}
-                  {isPrimary && (
-                    <span className="text-xs bg-blue-600 text-white px-2 py-1 rounded-full">
-                      PREDOMINANTE
-                    </span>
-                  )}
-                  {isSecondary && (
-                    <span className="text-xs bg-purple-600 text-white px-2 py-1 rounded-full">
-                      CO-PREDOMINANTE
-                    </span>
-                  )}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <span className="font-medium text-gray-700">Puntuación:</span>
-                    <span className={`${colors.text} font-bold text-lg`}>{data.score}/20</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="font-medium text-gray-700">Nivel:</span>
-                    <span className={`${colors.text} font-semibold`}>{data.description}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="font-medium text-gray-700">Distribución:</span>
-                    <span className={`${colors.text} font-semibold`}>{data.percentage}</span>
-                  </div>
-                  <Progress 
-                    value={(data.score / 20) * 100} 
-                    className="h-2 mt-2"
-                  />
-                </div>
-              </CardContent>
-            </Card>
-          )
-        })}
+      <div className="mb-6">
+        <div className="flex justify-between text-sm text-gray-600 mb-2">
+          <span>Progreso</span>
+          <span>Página {currentPage + 1} de {totalPages}</span>
+        </div>
+        <Progress value={(currentPage + 1) / totalPages * 100} className="h-2" />
       </div>
 
-      {/* Propuestas de Mejora según Estilo Predominante */}
-      <Card className="mt-8 bg-gradient-to-br from-blue-50 to-indigo-100 border-blue-200">
-        <CardHeader>
-          <CardTitle className="text-2xl text-blue-800 flex items-center gap-2">
-            <TrendingUp className="h-6 w-6" />
-            Propuestas para la Mejora de tu Estilo de Enseñanza
-          </CardTitle>
-          <CardDescription className="text-blue-600 text-base">
-            {dominantStyleInfo.isCombined ? (
-              <>Metodologías activas recomendadas para el estilo híbrido {dominantStyle.charAt(0).toUpperCase() + dominantStyle.slice(1)} - {dominantStyleInfo.secondary!.charAt(0).toUpperCase() + dominantStyleInfo.secondary!.slice(1)}</>
-            ) : (
-              <>Metodologías activas recomendadas para el estilo {dominantStyle.charAt(0).toUpperCase() + dominantStyle.slice(1)}</>
-            )}
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="p-6">
-          <StyleImprovement 
-            primaryStyle={dominantStyle as TeachingStyle} 
-            secondaryStyle={dominantStyleInfo.secondary as TeachingStyle | null}
-            isCombined={dominantStyleInfo.isCombined}
-            primaryScore={styleScores[dominantStyle as TeachingStyle].score}
-            secondaryScore={dominantStyleInfo.secondary ? styleScores[dominantStyleInfo.secondary as TeachingStyle].score : 0}
-            primaryDescription={styleScores[dominantStyle as TeachingStyle].description}
-            secondaryDescription={dominantStyleInfo.secondary ? styleScores[dominantStyleInfo.secondary as TeachingStyle].description : ""}
-          />
-        </CardContent>
-      </Card>
+      {error && (
+        <Alert variant="destructive" className="mb-4">
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
 
-      <Card className="mt-8 bg-gray-50">
-        <CardContent className="p-6">
-          <h3 className="text-lg font-semibold mb-3 text-gray-800">Nota sobre el Baremo</h3>
-          <p className="text-sm text-gray-600">
-            Los resultados se basan en el baremo actualizado creado a partir de las respuestas de la población 
-            docente que imparte la materia de algoritmos. Las puntuaciones están distribuidas según percentiles 
-            que reflejan la preferencia relativa de cada estilo de enseñanza en esta población específica.
-          </p>
-        </CardContent>
-      </Card>
-
-      <div className="mt-8 text-center">
-        <Button 
-          onClick={() => window.location.reload()} 
-          variant="outline" 
-          className="px-6 py-2"
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentPage}
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -50 }}
+          transition={{ duration: 0.3 }}
         >
-          ← Realizar Nueva Evaluación
+          {currentQuestions.map((question, index) => (
+            <QuestionCard
+              key={question.id}
+              question={question}
+              questionNumber={currentPage * questionsPerPage + index + 1}
+              selectedAnswer={answers.find(a => a.questionId === question.id)?.answer}
+              onAnswer={handleAnswer}
+            />
+          ))}
+        </motion.div>
+      </AnimatePresence>
+
+      <div className="flex justify-between mt-8">
+        <Button 
+          onClick={prevPage} 
+          disabled={currentPage === 0}
+          variant="outline"
+          className="px-6"
+        >
+          ← Anterior
+        </Button>
+        <Button 
+          onClick={nextPage}
+          className="px-6"
+        >
+          {currentPage === totalPages - 1 ? 'Ver Resultados →' : 'Siguiente →'}
         </Button>
       </div>
     </div>
