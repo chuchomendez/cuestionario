@@ -71,97 +71,80 @@ const questions: Question[] = [
 
   { id: 1, text: "La programación me limita a la hora de desarrollar la enseñanza.", style: "abierto" },
   { id: 2, text: "Durante el curso desarrollo pocos temas pero los abordo en profundidad", style: "formal" },
-  { id: 3, text: "Cuando propongo ejercicios dejo tiempo 
- suficiente para resolverlos", style: "formal" },
+  { id: 3, text: "Cuando propongo ejercicios dejo tiempo  suficiente para resolverlos", style: "formal" },
   { id: 4, text: "Las actividades de clase implican, en la mayoría de las veces, aprendizaje de técnicas para ser aplicadas.", style: "funcional" },
   { id: 5, text: "Siempre acompaño las explicaciones de ejemplos prácticos y útiles", style: "funcional" },
   { id: 6, text: "Las actividades que propongo a los estudiantes están siempre muy estructuradas y con propósitos claros y entendibles.", style: "estructurado" },
-  { id: 7, text: "Las cuestiones espontáneas o de actualidad que surgen en la dinámica de la clase, las priorizo sobre lo que estoy haciendo.", style: 
- "abierto" },
+  { id: 7, text: "Las cuestiones espontáneas o de actualidad que surgen en la dinámica de la clase, las priorizo sobre lo que estoy haciendo.", style:  "abierto" },
   { id: 8, text: "En las reuniones de trabajo con los colegas asumo una actitud de escucha.", style: "formal" },
   { id: 9, text: "Con frecuencia reconozco el mérito de los estudiantes cuando han realizado un buen trabajo.", style: "funcional" },
   { id: 10, text: "Con frecuencia la dinámica de la clase es en base a debates.", style: "estructurado" },
   { id: 11, text: "Cumpliendo la planificación cambio de temas aunque los aborde superficialmente", style: "abierto" },
-  { id: 12, text: "Fomento continuamente que los estudiantes piensen bien lo que van a decir 
- antes de expresarlo.", style: "formal" },
+  { id: 12, text: "Fomento continuamente que los estudiantes piensen bien lo que van a decir  antes de expresarlo.", style: "formal" },
   { id: 13, text: "Con frecuencia llevo a clase expertos en diferentes temas ya que considero que de esta manera se aprende mejor.", style: "funcional" },
   { id: 14, text: "La mayoría de los ejercicios que planteo se caracterizan por relacionar, analizar o generalizar.", style: "estructurado" },
   { id: 15, text: "Frecuentemente trabajo y hago trabajar bajo presión.", style: "estructurado" },
   { id: 16, text: "En clase solamente se trabaja sobre lo planificado no atendiendo otras cuestiones que surjan.", style: "formal" },
-  { id: 17, text: "Doy prioridad a 
- lo práctico y lo útil por encima de los sentimientos y las emociones.", style: "funcional" },
+  { id: 17, text: "Doy prioridad a  lo práctico y lo útil por encima de los sentimientos y las emociones.", style: "funcional" },
   { id: 18, text: "Me agradan las clases con estudiantes espontáneos, dinámicos e inquietos.", style: "abierto" },
   { id: 19, text: "Durante la clase no puedo evitar reflejar mi estado de ánimo.", style: "abierto" },
   { id: 20, text: "Evito que los estudiantes den explicaciones ante el conjunto de la clase", style: "formal" },
   { id: 21, text: "Tengo dificultad para romper rutinas metodológicas", style: "estructurado" },
-  { id: 22, text: "Entre los estudiantes y entre mis colegas tengo 
- fama de decir lo que pienso sin consideraciones.", style: "funcional" },
+  { id: 22, text: "Entre los estudiantes y entre mis colegas tengo  fama de decir lo que pienso sin consideraciones.", style: "funcional" },
   { id: 23, text: "En los exámenes predominan las cuestiones prácticas sobre las teóricas.", style: "funcional" },
   { id: 24, text: "Sin haber avisado, no pregunto sobre los temas tratados.", style: "formal" },
   { id: 25, text: "En clase fomento que las intervenciones de los estudiantes se razonen con coherencia.", style: "estructurado" },
   { id: 26, text: "Generalmente propongo a los estudiantes actividades que no sean repetitivas.", style: "abierto" },
-  { id: 27, text: "Permito que los estudiantes se agrupen por niveles intelectuales y/o 
- académicos semejantes.", style: "estructurado" },
+  { id: 27, text: "Permito que los estudiantes se agrupen por niveles intelectuales y/o  académicos semejantes.", style: "estructurado" },
   { id: 28, text: "En los exámenes valoro y califico la presentación y el orden", style: "formal" },
   { id: 29, text: "En clase la mayoría de las actividades suelen estar relacionadas con la realidad y ser prácticas.", style: "funcional" },
   { id: 30, text: "Prefiero trabajar con colegas que considero de un nivel intelectual igual o superior al mío.", style: "estructurado" },
   { id: 31, text: "Muy a menudo propongo a los estudiantes que se inventen problemas, preguntas y temas para tratar y/o resolver.", style: "abierto" },
-  { id: 
- 32, text: "Me disgusta mostrar una imagen de falta de conocimiento en la temática que estoy impartiendo.", style: "estructurado" },
+  { id:  32, text: "Me disgusta mostrar una imagen de falta de conocimiento en la temática que estoy impartiendo.", style: "estructurado" },
   { id: 33, text: "No suelo proponer actividades y dinámicas que desarrollen la creatividad y originalidad.", style: "formal" },
   { id: 34, text: "Empleo más tiempo en las aplicaciones y/o prácticas que en las teorías o lecciones magistrales.", style: "funcional" },
   { id: 35, text: "Valoro los ejercicios y las actividades que llevan sus desarrollo teóricos.", style: "estructurado" },
-  { id: 36, text: "Al iniciar el curso tengo planificado, casi al detalle, lo que voy a 
- desarrollar.", style: "formal" },
+  { id: 36, text: "Al iniciar el curso tengo planificado, casi al detalle, lo que voy a  desarrollar.", style: "formal" },
   { id: 37, text: "A los estudiantes les oriento continuamente en la realización de las actividades para evitar que caigan en el error", style: "funcional" },
   { id: 38, text: "En las reuniones de Departamento/Facultad, Claustros, Equipos de Trabajo y otras, habitualmente hablo más que escucho, aporto ideas y soy bastante participativo.", style: "abierto" },
   { id: 39, text: "La mayoría de las veces, en las explicaciones, aporto varios puntos de vista sin importarme el tiempo empleado.", style: "formal" },
-  { id: 40, text: "Valoro que las respuestas en los exámenes sean 
- lógicas y coherentes.", style: "estructurado" },
+  { id: 40, text: "Valoro que las respuestas en los exámenes sean  lógicas y coherentes.", style: "estructurado" },
   { id: 41, text: "Prefiero estudiantes reflexivos y con cierto método de trabajo.", style: "formal" },
   { id: 42, text: "Potencio la búsqueda de lo práctico para llegar a la solución.", style: "funcional" },
   { id: 43, text: "Si en clase alguna situación o actividad no sale bien, no me agobio y, sin reparos, la replanteo de otra forma.", style: "abierto" },
   { id: 44, text: "Prefiero y procuro que durante la clase no haya intervenciones espontáneas.", style: "estructurado" },
-  { id: 45, text: "Con frecuencia planteo actividades que 
- fomenten en los estudiantes la búsqueda de información para analizarla y establecer conclusiones.", style: "formal" },
+  { id: 45, text: "Con frecuencia planteo actividades que fomenten en los estudiantes la búsqueda de información para analizarla y establecer conclusiones.", style: "formal" },
   { id: 46, text: "Si la dinámica de la clase funciona bien, no me planteo otras consideraciones y/o subjetividades.", style: "funcional" },
   { id: 47, text: "Al principio del curso no comunico a los estudiantes la planificación de lo que tengo previsto desarrollar.", style: "abierto" },
   { id: 48, text: "Con frecuencia suelo pedir voluntarios/as entre los estudiantes para que expliquen actividades a los demás.", style: "abierto" },
-  { id: 49, text: "Los ejercicios que planteo suelen ser complejos aunque 
- bien estructurados en los pasos a seguir para su realización.", style: "estructurado" },
+  { id: 49, text: "Los ejercicios que planteo suelen ser complejos aunque bien estructurados en los pasos a seguir para su realización.", style: "estructurado" },
   { id: 50, text: "Siento cierta preferencia por los estudiantes prácticos y realistas sobre los teóricos e idealistas.", style: "funcional" },
   { id: 51, text: "En los primeros días de curso presento y, en algunos casos, acuerdo con los estudiantes la planificación a seguir.", style: "formal" },
   { id: 52, text: "Soy más abierto a relaciones profesionales que a relaciones afectivas.", style: "estructurado" },
   { id: 53, text: "Generalmente cuestiono casi todo lo que se expone o se dice.", style: "estructurado" },
-  
- { id: 54, text: "Entre mis colegas y en clase ánimo y procuro que no caigamos en comportamientos o dinámicas rutinarias.", style: "abierto" },
+  { id: 54, text: "Entre mis colegas y en clase ánimo y procuro que no caigamos en comportamientos o dinámicas rutinarias.", style: "abierto" },
   { id: 55, text: "Reflexiono sin tener en cuenta el tiempo y analizo los hechos desde muchos puntos de vista antes de tomar decisiones.", style: "formal" },
   { id: 56, text: "El trabajo metódico y detallista me produce desasosiego y me cansa", style: "abierto" },
   { id: 57, text: "Prefiero y aconsejo a los estudiantes que respondan a las preguntas de forma breve y concreta.", style: "funcional" },
-  { id: 58, text: 
- "Siempre procuro impartir los contenidos integrados en un marco de perspectiva más amplio.", style: "estructurado" },
+  { id: 58, text:  "Siempre procuro impartir los contenidos integrados en un marco de perspectiva más amplio.", style: "estructurado" },
   { id: 59, text: "No es frecuente que proponga a los estudiantes el trabajar en equipo", style: "formal" },
   { id: 60, text: "En clase, favorezco intencionadamente el aporte de ideas sin ninguna limitación formal.", style: "abierto" },
   { id: 61, text: "En la planificación, los procedimientos y experiencias prácticas tienen más peso que los contenidos teóricos.", style: "funcional" },
   { id: 62, text: "Las fechas de los exámenes las anuncio con suficiente antelación.", style: "formal" },
-  { id: 
- 63, text: "Me siento bien entre colegas y estudiantes que tienen ideas capaces de ponerse en práctica.", style: "funcional" },
+  { id:  63, text: "Me siento bien entre colegas y estudiantes que tienen ideas capaces de ponerse en práctica.", style: "funcional" },
   { id: 64, text: "Explico bastante y con detalle pues considero que así favorezco el aprendizaje.", style: "formal" },
   { id: 65, text: "Las explicaciones las hago lo más breves posibles y si puedo dentro de alguna situación real y actual.", style: "abierto" },
   { id: 66, text: "Los contenidos teóricos los imparto dentro de experiencias y trabajos prácticos.", style: "funcional" },
-  { id: 67, text: "Ante cualquier hecho favorezco que se razonen las causas.", style: 
- "formal" },
+  { id: 67, text: "Ante cualquier hecho favorezco que se razonen las causas.", style:  "formal" },
   { id: 68, text: "En los exámenes las preguntas suelen ser lo más abiertas posibles.", style: "abierto" },
   { id: 69, text: "En la planificación trato fundamentalmente de que todo esté organizado y cohesionado desde la lógica de la disciplina.", style: "estructurado" },
   { id: 70, text: "Con frecuencia modifico los métodos de enseñanza.", style: "abierto" },
   { id: 71, text: "Prefiero trabajar individualmente ya que me permite avanzar a mi ritmo y no sentir agobios ni estrés.", style: "formal" },
-  { id: 72, text: "En las reuniones con mis colegas trato de 
- analizar los planteamientos y problemas con objetividad.", style: "estructurado" },
+  { id: 72, text: "En las reuniones con mis colegas trato de  analizar los planteamientos y problemas con objetividad.", style: "estructurado" },
   { id: 73, text: "Antes que entreguen cualquier actividad, aconsejo que se revise y se compruebe su solución y la valoro sobre el proceso.", style: "funcional" },
   { id: 74, text: "Mantengo cierta actitud favorable hacia los estudiantes que razonan y actúan en coherencia.", style: "estructurado" },
   { id: 75, text: "Dejo trabajar en equipo siempre que la tarea lo permita.", style: "abierto" },
-  { id: 76, text: "En los exámenes, exijo que los estudiantes escriban/muestren las explicaciones sobre los pasos/procedimientos en la resolución de los 
- problemas y/o ejercicios.", style: "estructurado" },
+  { id: 76, text: "En los exámenes, exijo que los estudiantes escriban/muestren las explicaciones sobre los pasos/procedimientos en la resolución de los  problemas y/o ejercicios.", style: "estructurado" },
   { id: 77, text: "No me gusta que se divague, enseguida pido que se vaya a lo concreto.", style: "funcional" },
   { id: 78, text: "Suelo preguntar en clase, incluso sin haberlo anunciado.", style: "abierto" },
   { id: 79, text: "En ejercicios y trabajos de los estudiantes no valoro ni califico ni doy importancia a la presentación, el orden y los detalles.", style: "abierto" },
@@ -323,81 +306,62 @@ function StyleImprovement({
       methodologies: [
         {
           name: "Aprendizaje Basado en Problemas (ABP) o Proyectos (ABPj)",
-          description: "Esta metodología es ideal, ya que su propósito es resolver un problema o completar un proyecto del 
- mundo real, lo cual se alinea perfectamente con la preferencia del docente funcional por la practicidad y la aplicación de conocimientos.
- Se podrían plantear problemas de optimización de código, desarrollo de un algoritmo para una tarea específica, o la creación de un pequeño software."
+          description: "Esta metodología es ideal, ya que su propósito es resolver un problema o completar un proyecto del  mundo real, lo cual se alinea perfectamente con la preferencia del docente funcional por la practicidad y la aplicación de conocimientos. Se podrían plantear problemas de optimización de código, desarrollo de un algoritmo para una tarea específica, o la creación de un pequeño software."
         },
         {
           name: "Gamificación",
-          description: "La gamificación puede ser una excelente herramienta para mantener a los estudiantes motivados.
- A través de desafíos y recompensas, se pueden reforzar conceptos complejos de algoritmos de manera lúdica.
- Esto fomenta la creatividad, la resolución de problemas y la competencia sana, aspectos valorados por este estilo de enseñanza."
+          description: "La gamificación puede ser una excelente herramienta para mantener a los estudiantes motivados. A través de desafíos y recompensas, se pueden reforzar conceptos complejos de algoritmos de manera lúdica. Esto fomenta la creatividad, la resolución de problemas y la competencia sana, aspectos valorados por este estilo de enseñanza."
         }
       ],
       example: {
         title: "Ejemplo de aplicación:",
-        content: "En la materia de Algoritmos, un docente con estilo funcional podría proponer un proyecto de fin de semestre: \"Desarrollar un algoritmo de búsqueda y ordenamiento eficiente para una base de datos de 1,000,000 de registros\".
- En lugar de solo enseñar la teoría, el docente guiaría a los equipos de estudiantes para que apliquen y prueben diferentes algoritmos (Burbuja, Quicksort, Merge Sort, etc.) en situaciones reales, analizando su desempeño y seleccionando el más adecuado."
+        content: "En la materia de Algoritmos, un docente con estilo funcional podría proponer un proyecto de fin de semestre: \"Desarrollar un algoritmo de búsqueda y ordenamiento eficiente para una base de datos de 1,000,000 de registros\". En lugar de solo enseñar la teoría, el docente guiaría a los equipos de estudiantes para que apliquen y prueben diferentes algoritmos (Burbuja, Quicksort, Merge Sort, etc.) en situaciones reales, analizando su desempeño y seleccionando el más adecuado."
       }
     },
     abierto: {
       title: "Estilo de Enseñanza Abierto",
-      overview: "Este docente es flexible, espontáneo, y le gusta trabajar con ideas originales.
- Su práctica se caracteriza por la motivación a los estudiantes con actividades novedosas, a menudo basadas en problemas reales, y el fomento del trabajo en equipo sin limitaciones formales.",
+      overview: "Este docente es flexible, espontáneo, y le gusta trabajar con ideas originales. Su práctica se caracteriza por la motivación a los estudiantes con actividades novedosas, a menudo basadas en problemas reales, y el fomento del trabajo en equipo sin limitaciones formales.",
       methodologies: [
         {
           name: "Hackatones o Maratones de Programación",
-          description: "Estas actividades promueven la colaboración, la creatividad y la resolución de problemas en un ambiente dinámico y de alta presión.
- El docente podría plantear desafíos de programación con un tiempo limitado, permitiendo a los estudiantes explorar soluciones innovadoras."
+          description: "Estas actividades promueven la colaboración, la creatividad y la resolución de problemas en un ambiente dinámico y de alta presión. El docente podría plantear desafíos de programación con un tiempo limitado, permitiendo a los estudiantes explorar soluciones innovadoras."
         },
         {
           name: "Design Thinking",
-          description: "Esta metodología se basa en la ideación y prototipado rápido, lo cual coincide con la preferencia del docente abierto por la experimentación y el cambio de metodología.
- En la clase de Algoritmos, podría usarse para diseñar la lógica de un nuevo algoritmo antes de pasar a la codificación, permitiendo a los estudiantes debatir y actuar de forma espontánea."
+          description: "Esta metodología se basa en la ideación y prototipado rápido, lo cual coincide con la preferencia del docente abierto por la experimentación y el cambio de metodología. En la clase de Algoritmos, podría usarse para diseñar la lógica de un nuevo algoritmo antes de pasar a la codificación, permitiendo a los estudiantes debatir y actuar de forma espontánea."
         }
       ],
       example: {
         title: "Ejemplo de aplicación:",
-        content: "Se podría organizar un mini-hackatón donde los estudiantes, en equipos, tengan 24 horas para crear un algoritmo que resuelva un problema de la vida real.
- Por ejemplo, optimizar una ruta de entrega. El docente actuaría como facilitador, alentando a los estudiantes a debatir y a proponer soluciones originales."
+        content: "Se podría organizar un mini-hackatón donde los estudiantes, en equipos, tengan 24 horas para crear un algoritmo que resuelva un problema de la vida real. Por ejemplo, optimizar una ruta de entrega. El docente actuaría como facilitador, alentando a los estudiantes a debatir y a proponer soluciones originales."
       }
     },
     formal: {
       title: "Estilo de Enseñanza Formal",
-      overview: "Este docente se rige por una planificación estricta y detallada, no admitiendo la improvisación.
- Tiende a fomentar el trabajo individual y valora la reflexión, el análisis y la racionalidad.",
+      overview: "Este docente se rige por una planificación estricta y detallada, no admitiendo la improvisación. Tiende a fomentar el trabajo individual y valora la reflexión, el análisis y la racionalidad.",
       methodologies: [
         {
           name: "Clase Invertida (Flipped Classroom)",
-          description: "El docente puede mantener su rigurosa planificación al proporcionar el material teórico (videos, lecturas) para que los estudiantes lo revisen antes de clase.
- El tiempo en el aula, que típicamente se usaría para explicaciones magistrales, se dedicaría a la práctica y a la resolución de ejercicios complejos y detallados.
- Esto se alinea con la preferencia del docente formal por el trabajo individual y la profundidad en los contenidos."
+          description: "El docente puede mantener su rigurosa planificación al proporcionar el material teórico (videos, lecturas) para que los estudiantes lo revisen antes de clase. El tiempo en el aula, que típicamente se usaría para explicaciones magistrales, se dedicaría a la práctica y a la resolución de ejercicios complejos y detallados. Esto se alinea con la preferencia del docente formal por el trabajo individual y la profundidad en los contenidos."
         }
       ],
       example: {
         title: "Ejemplo de aplicación:",
-        content: "Antes de la clase, el docente envía videos y lecturas sobre la notación asintótica (Big O).
- En clase, en lugar de explicar la teoría, guía a los estudiantes individualmente en el análisis de la complejidad de diferentes algoritmos.
- Esto les permite aplicar lo aprendido, profundizar en el contenido y sustentar sus ideas de manera racional."
+        content: "Antes de la clase, el docente envía videos y lecturas sobre la notación asintótica (Big O). En clase, en lugar de explicar la teoría, guía a los estudiantes individualmente en el análisis de la complejidad de diferentes algoritmos. Esto les permite aplicar lo aprendido, profundizar en el contenido y sustentar sus ideas de manera racional."
       }
     },
     estructurado: {
       title: "Estilo de Enseñanza Estructurado",
-      overview: "Este docente valora la coherencia y la lógica, impartiendo los contenidos dentro de un marco teórico amplio y sistemático.
- Se inclina por el trabajo con actividades complejas que requieran establecer relaciones y demostraciones.",
+      overview: "Este docente valora la coherencia y la lógica, impartiendo los contenidos dentro de un marco teórico amplio y sistemático. Se inclina por el trabajo con actividades complejas que requieran establecer relaciones y demostraciones.",
       methodologies: [
         {
           name: "Aprendizaje Basado en Casos (ABC)",
-          description: "Esta metodología permite a los estudiantes analizar casos complejos relacionados con algoritmos, como la seguridad de una red o la eficiencia de un motor de búsqueda.
- Se fomenta el análisis, la demostración y la objetividad, lo cual se alinea con el enfoque del docente estructurado.
- Los estudiantes deben resolver los casos explicando cada paso y valorando el proceso sobre la solución."
+          description: "Esta metodología permite a los estudiantes analizar casos complejos relacionados con algoritmos, como la seguridad de una red o la eficiencia de un motor de búsqueda. Se fomenta el análisis, la demostración y la objetividad, lo cual se alinea con el enfoque del docente estructurado. Los estudiantes deben resolver los casos explicando cada paso y valorando el proceso sobre la solución."
         }
       ],
       example: {
         title: "Ejemplo de aplicación:",
-        content: "El docente presenta un caso de estudio sobre la optimización de un sistema de recomendación en una plataforma de streaming.
- Los estudiantes deben analizar el caso, identificar los algoritmos utilizados, proponer mejoras y justificar sus decisiones con argumentos lógicos y coherentes.
- El docente puede guiar el proceso, asegurándose de que cada paso esté bien estructurado y documentado."
+        content: "El docente presenta un caso de estudio sobre la optimización de un sistema de recomendación en una plataforma de streaming. Los estudiantes deben analizar el caso, identificar los algoritmos utilizados, proponer mejoras y justificar sus decisiones con argumentos lógicos y coherentes. El docente puede guiar el proceso, asegurándose de que cada paso esté bien estructurado y documentado."
       }
     }
   }
@@ -406,61 +370,50 @@ function StyleImprovement({
   const combinedImprovements = {
     'abierto-estructurado': {
       title: "Estilo de Enseñanza Híbrido: Abierto-Estructurado",
-      overview: "Su perfil combina la flexibilidad y espontaneidad del estilo abierto con la coherencia y lógica del estilo estructurado.
- Esto le permite ser creativo e innovador mientras mantiene un marco organizativo sólido para el aprendizaje.",
+      overview: "Su perfil combina la flexibilidad y espontaneidad del estilo abierto con la coherencia y lógica del estilo estructurado. Esto le permite ser creativo e innovador mientras mantiene un marco organizativo sólido para el aprendizaje.",
       methodologies: [
         {
           name: "Design Thinking Estructurado",
-          description: "Combine la metodología de Design Thinking (del estilo abierto) con fases bien definidas y documentadas (del estilo estructurado).
- Los estudiantes pueden explorar soluciones creativas para algoritmos siguiendo un proceso sistemático de ideación, prototipado y validación."
+          description: "Combine la metodología de Design Thinking (del estilo abierto) con fases bien definidas y documentadas (del estilo estructurado). Los estudiantes pueden explorar soluciones creativas para algoritmos siguiendo un proceso sistemático de ideación, prototipado y validación."
         },
         {
           name: "Hackatones con Marco Teórico",
-          description: "Organice hackatones donde los estudiantes trabajen libremente en equipos, pero requiera que fundamenten sus soluciones algorítmicas con análisis teórico riguroso.
- Esto combina la creatividad espontánea con el análisis sistemático."
+          description: "Organice hackatones donde los estudiantes trabajen libremente en equipos, pero requiera que fundamenten sus soluciones algorítmicas con análisis teórico riguroso. Esto combina la creatividad espontánea con el análisis sistemático."
         },
         {
           name: "Aprendizaje Basado en Casos Creativos",
-          description: "Presente casos complejos que requieran análisis estructurado, pero permita múltiples enfoques creativos para la solución.
- Los estudiantes deben justificar lógicamente sus propuestas innovadoras."
+          description: "Presente casos complejos que requieran análisis estructurado, pero permita múltiples enfoques creativos para la solución. Los estudiantes deben justificar lógicamente sus propuestas innovadoras."
         }
       ],
       example: {
         title: "Ejemplo de aplicación híbrida:",
-        content: "Organice un 'Algoritmo Challenge' donde los equipos tengan libertad creativa para abordar un problema real (ej: optimización de tráfico urbano), pero deben seguir fases estructuradas: 1) Análisis teórico del problema, 2) Diseño creativo de la solución, 3) Implementación con justificación lógica, 4) Evaluación sistemática de resultados.
- Esto permite la espontaneidad del estilo abierto dentro del marco lógico del estilo estructurado."
+        content: "Organice un 'Algoritmo Challenge' donde los equipos tengan libertad creativa para abordar un problema real (ej: optimización de tráfico urbano), pero deben seguir fases estructuradas: 1) Análisis teórico del problema, 2) Diseño creativo de la solución, 3) Implementación con justificación lógica, 4) Evaluación sistemática de resultados. Esto permite la espontaneidad del estilo abierto dentro del marco lógico del estilo estructurado."
       }
     },
     'abierto-formal': {
       title: "Estilo de Enseñanza Híbrido: Abierto-Formal",
-      overview: "Su perfil combina la creatividad y flexibilidad del estilo abierto con la planificación detallada y reflexión profunda del estilo formal.
- Esto le permite ser innovador mientras mantiene rigor académico.",
+      overview: "Su perfil combina la creatividad y flexibilidad del estilo abierto con la planificación detallada y reflexión profunda del estilo formal. Esto le permite ser innovador mientras mantiene rigor académico.",
       methodologies: [
         {
           name: "Clase Invertida con Debates Creativos",
           description: "Combine la planificación rigurosa del material teórico (formal) con sesiones de clase abiertas para debates espontáneos y exploración creativa de conceptos algorítmicos."
         },
         {
-          name: "Proyectos Guiados con 
- Exploración Libre",
-          description: "Estructure proyectos con objetivos claros y planificación detallada, pero permita a los estudiantes explorar libremente diferentes enfoques y soluciones creativas."
-        }
+          name: "Proyectos Guiados con Exploración Libre",
+          description: "Estructure proyectos con objetivos claros y planificación detallada, pero permita a los estudiantes explorar libremente diferentes enfoques y soluciones creativas."   
+             }
       ],
       example: {
         title: "Ejemplo de aplicación híbrida:",
-        content: "Planifique detalladamente un curso sobre estructuras de datos, pero en cada módulo incluya 'sesiones de exploración libre' donde los estudiantes puedan proponer aplicaciones creativas e innovadoras de 
- las estructuras estudiadas."
-      }
-    },
+        content: "Planifique detalladamente un curso sobre estructuras de datos, pero en cada módulo incluya 'sesiones de exploración libre' donde los estudiantes puedan proponer aplicaciones creativas e innovadoras de  las estructuras estudiadas."
+      }    },
     'abierto-funcional': {
       title: "Estilo de Enseñanza Híbrido: Abierto-Funcional",
-      overview: "Su perfil combina la creatividad y espontaneidad del estilo abierto con el enfoque práctico y aplicado del estilo funcional.
- Esto resulta en un enfoque muy dinámico y orientado a resultados prácticos.",
+      overview: "Su perfil combina la creatividad y espontaneidad del estilo abierto con el enfoque práctico y aplicado del estilo funcional. Esto resulta en un enfoque muy dinámico y orientado a resultados prácticos.",
       methodologies: [
         {
           name: "Hackatones Orientados a Soluciones Reales",
-          description: "Organice eventos creativos y espontáneos enfocados en resolver problemas prácticos del mundo real usando algoritmos.
- Combine la libertad creativa con la utilidad práctica."
+          description: "Organice eventos creativos y espontáneos enfocados en resolver problemas prácticos del mundo real usando algoritmos. Combine la libertad creativa con la utilidad práctica."
         },
         {
           name: "Gamificación con Proyectos Aplicados",
@@ -468,15 +421,13 @@ function StyleImprovement({
         }
       ],
       example: {
-        title: "Ejemplo de 
- aplicación híbrida:",
+        title: "Ejemplo de  aplicación híbrida:",
         content: "Realice 'Innovation Sprints' donde los equipos tienen libertad total para crear algoritmos innovadores que resuelvan problemas específicos de empresas locales, combinando creatividad sin límites con aplicabilidad práctica."
       }
     },
     'formal-estructurado': {
       title: "Estilo de Enseñanza Híbrido: Formal-Estructurado",
-      overview: "Su perfil combina la planificación rigurosa y reflexión profunda del estilo formal con la lógica sistemática del estilo estructurado.
- Esto resulta en un enfoque muy académico y fundamentado.",
+      overview: "Su perfil combina la planificación rigurosa y reflexión profunda del estilo formal con la lógica sistemática del estilo estructurado. Esto resulta en un enfoque muy académico y fundamentado.",
       methodologies: [
         {
           name: "Análisis de Casos con Fundamentación Teórica Profunda",
@@ -490,35 +441,30 @@ function StyleImprovement({
       ],
       example: {
         title: "Ejemplo de aplicación híbrida:",
-        content: "Desarrolle un curso donde los estudiantes estudien en profundidad la teoría de complejidad algorítmica (formal) 
- y luego analicen sistemáticamente casos reales de optimización, conectando cada concepto teórico con aplicaciones lógicamente estructuradas."
+        content: "Desarrolle un curso donde los estudiantes estudien en profundidad la teoría de complejidad algorítmica (formal)  y luego analicen sistemáticamente casos reales de optimización, conectando cada concepto teórico con aplicaciones lógicamente estructuradas."
       }
     },
     'formal-funcional': {
       title: "Estilo de Enseñanza Híbrido: Formal-Funcional",
-      overview: "Su perfil combina la reflexión profunda y planificación detallada del estilo formal con el enfoque práctico del estilo funcional.
- Esto resulta en un balance entre rigor académico y aplicabilidad.",
+      overview: "Su perfil combina la reflexión profunda y planificación detallada del estilo formal con el enfoque práctico del estilo funcional. Esto resulta en un balance entre rigor académico y aplicabilidad.",
       methodologies: [
         {
           name: "Clase Invertida con Proyectos Aplicados",
           description: "Combine la preparación teórica rigurosa fuera del aula con tiempo de clase dedicado a proyectos prácticos que apliquen directamente los conceptos estudiados."
         },
         {
-          name: "Análisis Reflexivo 
- de Implementaciones Prácticas",
+          name: "Análisis Reflexivo  de Implementaciones Prácticas",
           description: "Alterne entre sesiones de reflexión profunda sobre algoritmos y sesiones prácticas de implementación, asegurando que cada aplicación esté bien fundamentada teóricamente."
         }
       ],
       example: {
         title: "Ejemplo de aplicación híbrida:",
-        content: "Los estudiantes estudian en profundidad la teoría de grafos, luego implementan algoritmos de grafos para resolver problemas reales como optimización de redes sociales, siempre reflexionando 
- sobre la conexión teoría-práctica."
+                content: "Los estudiantes estudian en profundidad la teoría de grafos, luego implementan algoritmos de grafos para resolver problemas reales como optimización de redes sociales, siempre reflexionando  sobre la conexión teoría-práctica."
       }
     },
     'estructurado-funcional': {
       title: "Estilo de Enseñanza Híbrido: Estructurado-Funcional",
-      overview: "Su perfil combina el análisis lógico y sistemático del estilo estructurado con el enfoque práctico y aplicado del estilo funcional.
- Esto resulta en un enfoque muy efectivo para la resolución de problemas.",
+      overview: "Su perfil combina el análisis lógico y sistemático del estilo estructurado con el enfoque práctico y aplicado del estilo funcional. Esto resulta en un enfoque muy efectivo para la resolución de problemas.",
       methodologies: [
         {
           name: "Aprendizaje Basado en Problemas Estructurado",
@@ -532,8 +478,7 @@ function StyleImprovement({
       ],
       example: {
         title: "Ejemplo de aplicación híbrida:",
-        content: "Presente el desafío práctico de optimizar un algoritmo de recomendaciones, pero guíe a los estudiantes a través de un análisis sistemático de 
- diferentes enfoques, evaluando lógicamente pros y contras antes de implementar la solución más viable."
+        content: "Presente el desafío práctico de optimizar un algoritmo de recomendaciones, pero guíe a los estudiantes a través de un análisis sistemático de  diferentes enfoques, evaluando lógicamente pros y contras antes de implementar la solución más viable."
       }
     }
   }
@@ -697,8 +642,7 @@ function ResultsPage({ answers, questions }: { answers: Answer[], questions: Que
     })
 
     return Object.entries(styleCounts).reduce((acc, [style, count]) => {
-      const range = styleRanges[style as TeachingStyle].find(r 
- => count >= r.min && count <= r.max)
+      const range = styleRanges[style as TeachingStyle].find(r  => count >= r.min && count <= r.max)
       acc[style as TeachingStyle] = {
         score: count,
         description: range ?
