@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { TrendingUp } from "lucide-react"
 import { RadarChart, PolarGrid, PolarAngleAxis, Radar, Tooltip, ResponsiveContainer } from 'recharts'
@@ -9,37 +9,18 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Progress } from '@/components/ui/progress'
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
-type Question = {
-  id: number
-  text: string
-  style: TeachingStyle
-}
-
-type Answer = {
-  questionId: number
-  answer: 'SÍ' |
-'NO'
-}
-
 type TeachingStyle = 'abierto' | 'formal' | 'estructurado' | 'funcional'
-
-type StyleRange = {
-  min: number
-  max: number
-  description: string
-  percentage: string
-}
-
+type Question = { id: number; text: string; style: TeachingStyle }
+type Answer = { questionId: number; answer: 'SÍ' | 'NO' }
+type StyleRange = { min: number; max: number; description: string; percentage: string }
 type StyleRanges = Record<TeachingStyle, StyleRange[]>
 
-// Nuevo baremo actualizado según la imagen proporcionada
 const styleRanges: StyleRanges = {
   abierto: [
     { min: 0, max: 7, description: "Preferencia Muy Baja", percentage: "10%" },
     { min: 8, max: 9, description: "Preferencia Baja", percentage: "20%" },
     { min: 10, max: 13, description: "Preferencia Moderada", percentage: "40%" },
     { min: 14, max: 15, description: "Preferencia Alta", percentage: "20%" },
- 
     { min: 16, max: 20, description: "Preferencia Muy Alta", percentage: "10%" }
   ],
   formal: [
@@ -50,8 +31,7 @@ const styleRanges: StyleRanges = {
     { min: 17, max: 20, description: "Preferencia Muy Alta", percentage: "10%" }
   ],
   estructurado: [
-    
- { min: 0, max: 8, description: "Preferencia Muy Baja", percentage: "10%" },
+    { min: 0, max: 8, description: "Preferencia Muy Baja", percentage: "10%" },
     { min: 9, max: 10, description: "Preferencia Baja", percentage: "20%" },
     { min: 11, max: 13, description: "Preferencia Moderada", percentage: "40%" },
     { min: 14, max: 13, description: "Preferencia Alta", percentage: "20%" },
@@ -59,13 +39,16 @@ const styleRanges: StyleRanges = {
   ],
   funcional: [
     { min: 0, max: 11, description: "Preferencia Muy Baja", percentage: "10%" },
-    { min: 12, max: 13, description: "Preferencia Baja", 
- percentage: "20%" },
+    { min: 12, max: 13, description: "Preferencia Baja", percentage: "20%" },
     { min: 14, max: 15, description: "Preferencia Moderada", percentage: "40%" },
     { min: 16, max: 17, description: "Preferencia Alta", percentage: "20%" },
     { min: 18, max: 20, description: "Preferencia Muy Alta", percentage: "10%" }
   ]
 }
+
+// .
+// -- Error por generacion de codgo 
+
 
 const questions: Question[] = [
 
@@ -152,13 +135,12 @@ const questions: Question[] = [
  
 ]
 
-export 
- default function TeacherEvaluation() {
+
+export default function TeacherEvaluation() {
   const [currentPage, setCurrentPage] = useState(0)
   const [answers, setAnswers] = useState<Answer[]>([])
   const [showResults, setShowResults] = useState(false)
-  const [error, setError] = useState<string |
- null>(null)
+  const [error, setError] = useState<string | null>(null)
 
   const questionsPerPage = 10
   const totalPages = Math.ceil(questions.length / questionsPerPage)
@@ -178,24 +160,19 @@ export
 
   const nextPage = () => {
     const unansweredQuestions = currentQuestions.filter(
- 
       question => !answers.some(answer => answer.questionId === question.id)
     )
-
     if (unansweredQuestions.length > 0) {
       setError(`Por favor, responde todas las preguntas antes de continuar.`)
       return
     }
-
     setError(null)
-
     if (currentPage < totalPages - 1) {
       setCurrentPage(prev => prev + 1)
     } else {
       if (answers.length === questions.length) {
         setShowResults(true)
-     
-  } else {
+      } else {
         setError('Por favor, responde todas las preguntas antes de ver los resultados.')
       }
     }
@@ -214,41 +191,34 @@ export
 
   return (
     <div className="container mx-auto p-4 max-w-4xl">
-     
-  <div className="text-center mb-8">
+      <div className="text-center mb-8">
         <h1 className="text-3xl font-bold mb-2 text-gray-800">Evaluación del Estilo de Enseñanza</h1>
         <p className="text-gray-600">Responde con sinceridad a cada pregunta</p>
       </div>
-      
       <div className="mb-6">
         <div className="flex justify-between text-sm text-gray-600 mb-2">
           <span>Progreso</span>
           <span>Página {currentPage + 1} de {totalPages}</span>
         </div>
-  
-       <Progress value={(currentPage + 1) / totalPages * 100} className="h-2" />
+        <Progress value={(currentPage + 1) / totalPages * 100} className="h-2" />
       </div>
-
       {error && (
         <Alert variant="destructive" className="mb-4">
           <AlertTitle>Error</AlertTitle>
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
-
       <AnimatePresence mode="wait">
         <motion.div
           key={currentPage}
-  
-         initial={{ opacity: 0, x: 50 }}
+          initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -50 }}
           transition={{ duration: 0.3 }}
         >
           {currentQuestions.map((question, index) => (
             <QuestionCard
-           
-    key={question.id}
+              key={question.id}
               question={question}
               questionNumber={currentPage * questionsPerPage + index + 1}
               selectedAnswer={answers.find(a => a.questionId === question.id)?.answer}
@@ -256,9 +226,7 @@ export
             />
           ))}
         </motion.div>
- 
       </AnimatePresence>
-
       <div className="flex justify-between mt-8">
         <Button 
           onClick={prevPage} 
@@ -268,311 +236,22 @@ export
         >
           ← Anterior
         </Button>
-       
-  <Button 
+        <Button 
           onClick={nextPage}
           className="px-6"
         >
           {currentPage === totalPages - 1 ?
- 'Ver Resultados →' : 'Siguiente →'}
+            'Ver Resultados →' : 'Siguiente →'}
         </Button>
       </div>
     </div>
   )
 }
 
-function StyleImprovement({ 
-  primaryStyle, 
-  secondaryStyle, 
-  isCombined, 
-  primaryScore, 
-  secondaryScore, 
-  primaryDescription, 
-  secondaryDescription 
-}: { 
-  primaryStyle: TeachingStyle, 
-  secondaryStyle: TeachingStyle | null,
-  isCombined: boolean,
-  primaryScore: number, 
-  secondaryScore: number,
-  primaryDescription: string,
-  secondaryDescription: string
-}) {
-  const improvements = {
-    funcional: {
-      title: "Estilo de Enseñanza Funcional",
-    
-   overview: "Su práctica docente se centra en actividades prácticas con una apertura al trabajo en equipo. Los docentes con este estilo priorizan la utilidad y viabilidad de los contenidos, sustituyendo las exposiciones teóricas por experiencias y trabajos prácticos.",
-      methodologies: [
-        {
-          name: "Aprendizaje Basado en Problemas (ABP) o Proyectos (ABPj)",
-          description: "Esta metodología es ideal, ya que su propósito es resolver un problema o completar un proyecto del  mundo real, lo cual se alinea perfectamente con la preferencia del docente funcional por la practicidad y la aplicación de conocimientos. Se podrían plantear problemas de optimización de código, desarrollo de un algoritmo para una tarea específica, o la creación de un pequeño software."
-        },
-        {
-          name: "Gamificación",
-          description: "La gamificación puede ser una excelente herramienta para mantener a los estudiantes motivados. A través de desafíos y recompensas, se pueden reforzar conceptos complejos de algoritmos de manera lúdica. Esto fomenta la creatividad, la resolución de problemas y la competencia sana, aspectos valorados por este estilo de enseñanza."
-        }
-      ],
-      example: {
-        title: "Ejemplo de aplicación:",
-        content: "En la materia de Algoritmos, un docente con estilo funcional podría proponer un proyecto de fin de semestre: \"Desarrollar un algoritmo de búsqueda y ordenamiento eficiente para una base de datos de 1,000,000 de registros\". En lugar de solo enseñar la teoría, el docente guiaría a los equipos de estudiantes para que apliquen y prueben diferentes algoritmos (Burbuja, Quicksort, Merge Sort, etc.) en situaciones reales, analizando su desempeño y seleccionando el más adecuado."
-      }
-    },
-    abierto: {
-      title: "Estilo de Enseñanza Abierto",
-      overview: "Este docente es flexible, espontáneo, y le gusta trabajar con ideas originales. Su práctica se caracteriza por la motivación a los estudiantes con actividades novedosas, a menudo basadas en problemas reales, y el fomento del trabajo en equipo sin limitaciones formales.",
-      methodologies: [
-        {
-          name: "Hackatones o Maratones de Programación",
-          description: "Estas actividades promueven la colaboración, la creatividad y la resolución de problemas en un ambiente dinámico y de alta presión. El docente podría plantear desafíos de programación con un tiempo limitado, permitiendo a los estudiantes explorar soluciones innovadoras."
-        },
-        {
-          name: "Design Thinking",
-          description: "Esta metodología se basa en la ideación y prototipado rápido, lo cual coincide con la preferencia del docente abierto por la experimentación y el cambio de metodología. En la clase de Algoritmos, podría usarse para diseñar la lógica de un nuevo algoritmo antes de pasar a la codificación, permitiendo a los estudiantes debatir y actuar de forma espontánea."
-        }
-      ],
-      example: {
-        title: "Ejemplo de aplicación:",
-        content: "Se podría organizar un mini-hackatón donde los estudiantes, en equipos, tengan 24 horas para crear un algoritmo que resuelva un problema de la vida real. Por ejemplo, optimizar una ruta de entrega. El docente actuaría como facilitador, alentando a los estudiantes a debatir y a proponer soluciones originales."
-      }
-    },
-    formal: {
-      title: "Estilo de Enseñanza Formal",
-      overview: "Este docente se rige por una planificación estricta y detallada, no admitiendo la improvisación. Tiende a fomentar el trabajo individual y valora la reflexión, el análisis y la racionalidad.",
-      methodologies: [
-        {
-          name: "Clase Invertida (Flipped Classroom)",
-          description: "El docente puede mantener su rigurosa planificación al proporcionar el material teórico (videos, lecturas) para que los estudiantes lo revisen antes de clase. El tiempo en el aula, que típicamente se usaría para explicaciones magistrales, se dedicaría a la práctica y a la resolución de ejercicios complejos y detallados. Esto se alinea con la preferencia del docente formal por el trabajo individual y la profundidad en los contenidos."
-        }
-      ],
-      example: {
-        title: "Ejemplo de aplicación:",
-        content: "Antes de la clase, el docente envía videos y lecturas sobre la notación asintótica (Big O). En clase, en lugar de explicar la teoría, guía a los estudiantes individualmente en el análisis de la complejidad de diferentes algoritmos. Esto les permite aplicar lo aprendido, profundizar en el contenido y sustentar sus ideas de manera racional."
-      }
-    },
-    estructurado: {
-      title: "Estilo de Enseñanza Estructurado",
-      overview: "Este docente valora la coherencia y la lógica, impartiendo los contenidos dentro de un marco teórico amplio y sistemático. Se inclina por el trabajo con actividades complejas que requieran establecer relaciones y demostraciones.",
-      methodologies: [
-        {
-          name: "Aprendizaje Basado en Casos (ABC)",
-          description: "Esta metodología permite a los estudiantes analizar casos complejos relacionados con algoritmos, como la seguridad de una red o la eficiencia de un motor de búsqueda. Se fomenta el análisis, la demostración y la objetividad, lo cual se alinea con el enfoque del docente estructurado. Los estudiantes deben resolver los casos explicando cada paso y valorando el proceso sobre la solución."
-        }
-      ],
-      example: {
-        title: "Ejemplo de aplicación:",
-        content: "El docente presenta un caso de estudio sobre la optimización de un sistema de recomendación en una plataforma de streaming. Los estudiantes deben analizar el caso, identificar los algoritmos utilizados, proponer mejoras y justificar sus decisiones con argumentos lógicos y coherentes. El docente puede guiar el proceso, asegurándose de que cada paso esté bien estructurado y documentado."
-      }
-    }
-  }
-
-  // Combinaciones de estilos para propuestas híbridas
-  const combinedImprovements = {
-    'abierto-estructurado': {
-      title: "Estilo de Enseñanza Híbrido: Abierto-Estructurado",
-      overview: "Su perfil combina la flexibilidad y espontaneidad del estilo abierto con la coherencia y lógica del estilo estructurado. Esto le permite ser creativo e innovador mientras mantiene un marco organizativo sólido para el aprendizaje.",
-      methodologies: [
-        {
-          name: "Design Thinking Estructurado",
-          description: "Combine la metodología de Design Thinking (del estilo abierto) con fases bien definidas y documentadas (del estilo estructurado). Los estudiantes pueden explorar soluciones creativas para algoritmos siguiendo un proceso sistemático de ideación, prototipado y validación."
-        },
-        {
-          name: "Hackatones con Marco Teórico",
-          description: "Organice hackatones donde los estudiantes trabajen libremente en equipos, pero requiera que fundamenten sus soluciones algorítmicas con análisis teórico riguroso. Esto combina la creatividad espontánea con el análisis sistemático."
-        },
-        {
-          name: "Aprendizaje Basado en Casos Creativos",
-          description: "Presente casos complejos que requieran análisis estructurado, pero permita múltiples enfoques creativos para la solución. Los estudiantes deben justificar lógicamente sus propuestas innovadoras."
-        }
-      ],
-      example: {
-        title: "Ejemplo de aplicación híbrida:",
-        content: "Organice un 'Algoritmo Challenge' donde los equipos tengan libertad creativa para abordar un problema real (ej: optimización de tráfico urbano), pero deben seguir fases estructuradas: 1) Análisis teórico del problema, 2) Diseño creativo de la solución, 3) Implementación con justificación lógica, 4) Evaluación sistemática de resultados. Esto permite la espontaneidad del estilo abierto dentro del marco lógico del estilo estructurado."
-      }
-    },
-    'abierto-formal': {
-      title: "Estilo de Enseñanza Híbrido: Abierto-Formal",
-      overview: "Su perfil combina la creatividad y flexibilidad del estilo abierto con la planificación detallada y reflexión profunda del estilo formal. Esto le permite ser innovador mientras mantiene rigor académico.",
-      methodologies: [
-        {
-          name: "Clase Invertida con Debates Creativos",
-          description: "Combine la planificación rigurosa del material teórico (formal) con sesiones de clase abiertas para debates espontáneos y exploración creativa de conceptos algorítmicos."
-        },
-        {
-          name: "Proyectos Guiados con Exploración Libre",
-          description: "Estructure proyectos con objetivos claros y planificación detallada, pero permita a los estudiantes explorar libremente diferentes enfoques y soluciones creativas."   
-             }
-      ],
-      example: {
-        title: "Ejemplo de aplicación híbrida:",
-        content: "Planifique detalladamente un curso sobre estructuras de datos, pero en cada módulo incluya 'sesiones de exploración libre' donde los estudiantes puedan proponer aplicaciones creativas e innovadoras de  las estructuras estudiadas."
-      }    },
-    'abierto-funcional': {
-      title: "Estilo de Enseñanza Híbrido: Abierto-Funcional",
-      overview: "Su perfil combina la creatividad y espontaneidad del estilo abierto con el enfoque práctico y aplicado del estilo funcional. Esto resulta en un enfoque muy dinámico y orientado a resultados prácticos.",
-      methodologies: [
-        {
-          name: "Hackatones Orientados a Soluciones Reales",
-          description: "Organice eventos creativos y espontáneos enfocados en resolver problemas prácticos del mundo real usando algoritmos. Combine la libertad creativa con la utilidad práctica."
-        },
-        {
-          name: "Gamificación con Proyectos Aplicados",
-          description: "Use elementos de juego y competencia sana, pero siempre orientados hacia la creación de soluciones algorítmicas que tengan aplicación práctica inmediata."
-        }
-      ],
-      example: {
-        title: "Ejemplo de  aplicación híbrida:",
-        content: "Realice 'Innovation Sprints' donde los equipos tienen libertad total para crear algoritmos innovadores que resuelvan problemas específicos de empresas locales, combinando creatividad sin límites con aplicabilidad práctica."
-      }
-    },
-    'formal-estructurado': {
-      title: "Estilo de Enseñanza Híbrido: Formal-Estructurado",
-      overview: "Su perfil combina la planificación rigurosa y reflexión profunda del estilo formal con la lógica sistemática del estilo estructurado. Esto resulta en un enfoque muy académico y fundamentado.",
-      methodologies: [
-        {
-          name: "Análisis de Casos con Fundamentación Teórica Profunda",
-          description: "Combine el análisis sistemático de casos complejos con sesiones de reflexión profunda sobre los fundamentos teóricos, permitiendo a los estudiantes desarrollar comprensión tanto práctica como conceptual."
-        },
-        {
-        
-   name: "Clase Invertida con Marco Lógico",
-          description: "Use la metodología de clase invertida pero con un enfoque muy estructurado, donde cada elemento teórico se conecta lógicamente con el siguiente en un marco coherente."
-        }
-      ],
-      example: {
-        title: "Ejemplo de aplicación híbrida:",
-        content: "Desarrolle un curso donde los estudiantes estudien en profundidad la teoría de complejidad algorítmica (formal)  y luego analicen sistemáticamente casos reales de optimización, conectando cada concepto teórico con aplicaciones lógicamente estructuradas."
-      }
-    },
-    'formal-funcional': {
-      title: "Estilo de Enseñanza Híbrido: Formal-Funcional",
-      overview: "Su perfil combina la reflexión profunda y planificación detallada del estilo formal con el enfoque práctico del estilo funcional. Esto resulta en un balance entre rigor académico y aplicabilidad.",
-      methodologies: [
-        {
-          name: "Clase Invertida con Proyectos Aplicados",
-          description: "Combine la preparación teórica rigurosa fuera del aula con tiempo de clase dedicado a proyectos prácticos que apliquen directamente los conceptos estudiados."
-        },
-        {
-          name: "Análisis Reflexivo  de Implementaciones Prácticas",
-          description: "Alterne entre sesiones de reflexión profunda sobre algoritmos y sesiones prácticas de implementación, asegurando que cada aplicación esté bien fundamentada teóricamente."
-        }
-      ],
-      example: {
-        title: "Ejemplo de aplicación híbrida:",
-                content: "Los estudiantes estudian en profundidad la teoría de grafos, luego implementan algoritmos de grafos para resolver problemas reales como optimización de redes sociales, siempre reflexionando  sobre la conexión teoría-práctica."
-      }
-    },
-    'estructurado-funcional': {
-      title: "Estilo de Enseñanza Híbrido: Estructurado-Funcional",
-      overview: "Su perfil combina el análisis lógico y sistemático del estilo estructurado con el enfoque práctico y aplicado del estilo funcional. Esto resulta en un enfoque muy efectivo para la resolución de problemas.",
-      methodologies: [
-        {
-          name: "Aprendizaje Basado en Problemas Estructurado",
-          description: "Use problemas reales y prácticos, pero abórdelos de manera sistemática y lógica, asegurando que cada paso del proceso de solución esté bien fundamentado y documentado."
-        },
-        {
-        
-   name: "Gamificación con Análisis Sistemático",
-          description: "Implemente elementos de juego para mantener la motivación práctica, pero requiera que los estudiantes analicen sistemáticamente sus estrategias y resultados."
-        }
-      ],
-      example: {
-        title: "Ejemplo de aplicación híbrida:",
-        content: "Presente el desafío práctico de optimizar un algoritmo de recomendaciones, pero guíe a los estudiantes a través de un análisis sistemático de  diferentes enfoques, evaluando lógicamente pros y contras antes de implementar la solución más viable."
-      }
-    }
-  }
-
-  const improvement = isCombined 
-    ?
- combinedImprovements[`${primaryStyle}-${secondaryStyle}` as keyof typeof combinedImprovements] || combinedImprovements[`${secondaryStyle}-${primaryStyle}` as keyof typeof combinedImprovements]
-    : improvements[primaryStyle]
-
-  const getStyleColor = () => {
-    const colors = {
-      funcional: 'orange',
-      abierto: 'blue', 
-      formal: 'green',
-      estructurado: 'purple'
-    }
-    return isCombined ?
- 'indigo' : colors[primaryStyle]
-  }
-
-  const color = getStyleColor()
-
-  return (
-    <div className="space-y-6">
-      <div className={`bg-${color}-50 border border-${color}-200 rounded-lg p-6`}>
-        <h3 className={`text-xl font-bold text-${color}-800 mb-3`}>
-          {improvement.title}
-        </h3>
-        <p className={`text-${color}-700 leading-relaxed mb-4`}>
-          {improvement.overview}
-        </p>
-        <div className={`text-sm text-${color}-600 flex items-center 
- gap-4 flex-wrap`}>
-          <div className="flex items-center gap-2">
-            <span className="font-medium">Estilo primario:</span>
-            <span className="font-bold">{primaryScore}/20</span>
-            <span>•</span>
-            <span>{primaryDescription}</span>
-          </div>
-          {isCombined && secondaryStyle && (
-           
-  <div className="flex items-center gap-2">
-              <span className="font-medium">Estilo secundario:</span>
-              <span className="font-bold">{secondaryScore}/20</span>
-              <span>•</span>
-              <span>{secondaryDescription}</span>
-            </div>
-          )}
-        </div>
-      </div>
-
- 
-      <div className="space-y-4">
-        <h4 className="text-lg font-semibold text-gray-800">
-          {isCombined ?
- 'Metodologías Híbridas Recomendadas:' : 'Metodologías Activas Recomendadas:'}
-        </h4>
-        
-        {improvement.methodologies.map((methodology, index) => (
-          <Card key={index} className="border-l-4 border-l-blue-500">
-            <CardContent className="p-4">
-              <h5 className="font-semibold text-blue-800 mb-2">
-                {methodology.name}
-        
-       </h5>
-              <p className="text-gray-700 text-sm leading-relaxed">
-                {methodology.description}
-              </p>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      <Card className={`bg-gradient-to-r from-${color}-100 to-${color}-50 border-${color}-200`}>
- 
-        <CardContent className="p-5">
-          <h5 className={`font-bold text-${color}-800 mb-3`}>
-            {improvement.example.title}
-          </h5>
-          <p className={`text-${color}-700 text-sm leading-relaxed italic`}>
-            {improvement.example.content}
-          </p>
-        </CardContent>
-      </Card>
-    </div>
-  )
-}
-
-function 
- QuestionCard({ question, questionNumber, selectedAnswer, onAnswer }: {
+function QuestionCard({ question, questionNumber, selectedAnswer, onAnswer }: {
   question: Question
   questionNumber: number
-  selectedAnswer?: 'SÍ' |
- 'NO'
+  selectedAnswer?: 'SÍ' | 'NO'
   onAnswer: (questionId: number, answer: 'SÍ' | 'NO') => void
 }) {
   return (
@@ -583,41 +262,34 @@ function
             {questionNumber}
           </div>
           <div className="flex-1">
- 
             <h2 className="text-lg font-medium mb-4 text-gray-800 leading-relaxed">
               {question.text}
             </h2>
             <div className="flex gap-3">
               <Button
                 variant={selectedAnswer === 'SÍ' ? "default" : "outline"}
-        
-         onClick={() => onAnswer(question.id, 'SÍ')}
+                onClick={() => onAnswer(question.id, 'SÍ')}
                 className={`flex-1 py-3 transition-all duration-200 ${
                   selectedAnswer === 'SÍ' 
-                    ?
- 'bg-green-600 hover:bg-green-700 border-green-600' 
+                    ? 'bg-green-600 hover:bg-green-700 border-green-600' 
                     : 'hover:border-green-300 hover:text-green-600'
                 }`}
               >
                 SÍ
               </Button>
               <Button
- 
-                variant={selectedAnswer === 'NO' ?
- "default" : "outline"}
+                variant={selectedAnswer === 'NO' ? "default" : "outline"}
                 onClick={() => onAnswer(question.id, 'NO')}
                 className={`flex-1 py-3 transition-all duration-200 ${
                   selectedAnswer === 'NO' 
-                    ?
- 'bg-red-600 hover:bg-red-700 border-red-600' 
+                    ? 'bg-red-600 hover:bg-red-700 border-red-600' 
                     : 'hover:border-red-300 hover:text-red-600'
                 }`}
               >
                 NO
               </Button>
             </div>
-   
-        </div>
+          </div>
         </div>
       </CardContent>
     </Card>
@@ -625,87 +297,98 @@ function
 }
 
 function ResultsPage({ answers, questions }: { answers: Answer[], questions: Question[] }) {
+  // Calcula los scores y el baremo para cada estilo
   const calculateStyleScores = () => {
     const styleCounts: Record<TeachingStyle, number> = {
-      abierto: 0,                                       
-        
+      abierto: 0,
       formal: 0,
       estructurado: 0,
       funcional: 0
     }
-
     questions.forEach(question => {
       const answer = answers.find(a => a.questionId === question.id)
       if (answer?.answer === 'SÍ') {
         styleCounts[question.style]++
       }
     })
-
     return Object.entries(styleCounts).reduce((acc, [style, count]) => {
-      const range = styleRanges[style as TeachingStyle].find(r  => count >= r.min && count <= r.max)
+      const range = styleRanges[style as TeachingStyle].find(r => count >= r.min && count <= r.max)
       acc[style as TeachingStyle] = {
         score: count,
-        description: range ?
- range.description : "No hay descripción disponible",
-        percentage: range ?
- range.percentage : "N/A"
+        description: range ? range.description : "No hay descripción disponible",
+        percentage: range ? range.percentage : "N/A"
       }
       return acc
-    }, {} as Record<TeachingStyle, { score: number;
- description: string; percentage: string }>)
+    }, {} as Record<TeachingStyle, { score: number; description: string; percentage: string }>)
   }
 
   const styleScores = calculateStyleScores()
 
-  const chartData = Object.entries(styleScores).map(([style, data]) => ({
-    style: style.charAt(0).toUpperCase() + style.slice(1),
-    value: data.score
-  }))
-
-  // ASERCIÓN DE TIPOS CORREGIDA AQUÍ
+  // CORRECCIÓN: Escoge por mayor porcentaje, luego mayor puntuación
   const getDominantStyles = () => {
-    const sortedStyles = Object.entries(styleScores).sort((a, b) => b[1].score - a[1].score)
-    const highestScore = sortedStyles[0][1].score
-    const dominantStyles = sortedStyles.filter(([_, data]) => data.score === highestScore)
-    
-    if (dominantStyles.length === 1) {
+    const percentages = Object.entries(styleScores).map(([style, data]) => ({
+      style,
+      percentage: Number(data.percentage.replace('%', '')),
+      score: data.score,
+    }))
+    const maxPercentage = Math.max(...percentages.map(p => p.percentage))
+    const topPercentageStyles = percentages.filter(p => p.percentage === maxPercentage)
+    // Ahora, de los de mayor porcentaje, escoge el de mayor puntuación
+    const maxScore = Math.max(...topPercentageStyles.map(p => p.score))
+    const topScoreStyles = topPercentageStyles.filter(p => p.score === maxScore)
+    if (topScoreStyles.length === 1) {
       return {
-     
-        primary: dominantStyles[0][0] as TeachingStyle,
+        primary: topScoreStyles[0].style as TeachingStyle,
         secondary: null,
-        isCombined: false
+        isCombined: false,
+        maxPercentage: topScoreStyles[0].percentage
       }
-    } else if (dominantStyles.length >= 2) {
+    } else if (topScoreStyles.length >= 2) {
       return {
-        primary: dominantStyles[0][0] as TeachingStyle,
-        secondary: dominantStyles[1][0] as TeachingStyle,
-        isCombined: true
+        primary: topScoreStyles[0].style as TeachingStyle,
+        secondary: topScoreStyles[1].style as TeachingStyle,
+        isCombined: true,
+        maxPercentage: topScoreStyles[0].percentage
       }
     } else {
       return {
         primary: 'abierto' as TeachingStyle,
         secondary: null,
-        isCombined: false
+        isCombined: false,
+        maxPercentage: percentages[0].percentage
       }
     }
   }
 
   const dominantStyleInfo = getDominantStyles()
-
-  // Uso de dominantStyleInfo.primary y .secondary sin aserciones adicionales
   const dominantStyle = dominantStyleInfo.primary
+
+  // ¿Cuál estilo tiene el mayor porcentaje del baremo?
+  const orderByPercentage = Object.entries(styleScores)
+    .map(([style, data]) => ({
+      style,
+      percentage: Number(data.percentage.replace('%', '')),
+      score: data.score
+    }))
+    .sort((a, b) => b.percentage - a.percentage || b.score - a.score)
+
+  const styleWithMaxPercentage = orderByPercentage[0].style
+  const maxPercentageValue = orderByPercentage[0].percentage
 
   const getColorForStyle = (style: string) => {
     const colors = {
       abierto: { bg: 'bg-blue-50', border: 'border-blue-200', text: 'text-blue-700' },
-      formal: { bg: 'bg-green-50', border: 'border-green-200', 
- text: 'text-green-700' },
+      formal: { bg: 'bg-green-50', border: 'border-green-200', text: 'text-green-700' },
       estructurado: { bg: 'bg-purple-50', border: 'border-purple-200', text: 'text-purple-700' },
       funcional: { bg: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-700' }
     }
-    return colors[style as keyof typeof colors] ||
- colors.abierto
+    return colors[style as keyof typeof colors] || colors.abierto
   }
+
+  const chartData = Object.entries(styleScores).map(([style, data]) => ({
+    style: style.charAt(0).toUpperCase() + style.slice(1),
+    value: data.score
+  }))
 
   return (
     <div className="container mx-auto p-4 max-w-6xl">
@@ -718,37 +401,32 @@ function ResultsPage({ answers, questions }: { answers: Answer[], questions: Que
         <CardHeader className="text-center pb-4">
           <CardTitle className="text-2xl">Radar de Estilos de Enseñanza</CardTitle>
           <CardDescription>
- 
-            Distribución de puntuaciones según el nuevo baremo actualizado
+            Distribución de puntuaciones según el baremo actualizado
           </CardDescription>
         </CardHeader>
         <CardContent className="pb-0">
           <ResponsiveContainer width="100%" height={450}>
             <RadarChart data={chartData}>
               <PolarGrid stroke="#e5e7eb" />
-              
- <PolarAngleAxis 
+              <PolarAngleAxis 
                 dataKey="style" 
                 tick={{ fontSize: 12, fill: '#374151' }}
                 className="font-medium"
               />
               <Radar 
-                
- name="Puntuación" 
+                name="Puntuación" 
                 dataKey="value" 
                 stroke="#3b82f6" 
                 fill="#3b82f6" 
                 fillOpacity={0.3}
                 strokeWidth={2}
               />
-  
               <Tooltip 
                 contentStyle={{
                   backgroundColor: '#f9fafb',
                   border: '1px solid #d1d5db',
                   borderRadius: '8px',
-            
-       fontSize: '14px'
+                  fontSize: '14px'
                 }}
               />
             </RadarChart>
@@ -756,148 +434,98 @@ function ResultsPage({ answers, questions }: { answers: Answer[], questions: Que
         </CardContent>
         <CardFooter className="flex-col gap-2 text-center">
           <div className="flex items-center gap-2 font-semibold text-lg text-gray-800">
-      
-       <TrendingUp className="h-5 w-5 text-blue-600" />
-            {dominantStyleInfo.isCombined ?
- (
+            <TrendingUp className="h-5 w-5 text-blue-600" />
+            {dominantStyleInfo.isCombined ? (
               <>
                 Estilos Predominantes: {dominantStyle.charAt(0).toUpperCase() + dominantStyle.slice(1)} - {dominantStyleInfo.secondary!.charAt(0).toUpperCase() + dominantStyleInfo.secondary!.slice(1)}
                 <span className="text-xs bg-purple-600 text-white px-2 py-1 rounded-full ml-2">
                   COMBINADO
                 </span>
-     
-           </>
+              </>
             ) : (
               <>
                 Estilo Predominante: {dominantStyle.charAt(0).toUpperCase() + dominantStyle.slice(1)}
               </>
             )}
           </div>
-       
-     <div className="text-sm text-gray-600">
-            {dominantStyleInfo.isCombined ?
- (
+          <div className="text-sm text-gray-600">
+            {dominantStyleInfo.isCombined ? (
               <>
                 Puntuación: {styleScores[dominantStyle as TeachingStyle].score} puntos cada uno |
-                Perfil híbrido con características mixtas
+                Perfil híbrido con características mixtas |
+                Mayor porcentaje de baremo: {dominantStyleInfo.maxPercentage}%
               </>
             ) : (
               <>
- 
                 Puntuación: {styleScores[dominantStyle as TeachingStyle].score} | 
-                {styleScores[dominantStyle as TeachingStyle].description}
+                {styleScores[dominantStyle as TeachingStyle].description} | 
+                Mayor porcentaje de baremo: {dominantStyleInfo.maxPercentage}%
               </>
             )}
           </div>
         </CardFooter>
       </Card>
 
-      <h2 className="text-2xl font-semibold mb-6 text-gray-800">Análisis Detallado 
- por Estilo</h2>
-      
+      <div className="mb-4 text-center text-lg font-semibold">
+        <span className="text-gray-700">
+          El estilo con mayor porcentaje en el baremo es: <span className="text-blue-700">{styleWithMaxPercentage.charAt(0).toUpperCase() + styleWithMaxPercentage.slice(1)}</span> (<span className="text-blue-700">{maxPercentageValue}%</span>)
+        </span>
+      </div>
+
+      <h2 className="text-2xl font-semibold mb-6 text-gray-800">Análisis Detallado por Estilo</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {Object.entries(styleScores).map(([style, data]) => {
           const colors = getColorForStyle(style)
           const isPrimary = style === dominantStyle
           const isSecondary = style === dominantStyleInfo.secondary
           const isDominant = isPrimary || isSecondary
-          
-   
-        return (
-            <Card key={style} className={`${colors.bg} ${colors.border} border-2 ${isDominant ?
- 'ring-2 ring-blue-300' : ''}`}>
+          const isMaxPercentage = style === styleWithMaxPercentage
+          return (
+            <Card key={style} className={`${colors.bg} ${colors.border} border-2 ${isDominant ? 'ring-2 ring-blue-300' : ''} ${isMaxPercentage ? 'ring-2 ring-yellow-300' : ''}`}>
               <CardHeader className="pb-3">
                 <CardTitle className={`${colors.text} text-xl flex items-center justify-between`}>
                   {style.charAt(0).toUpperCase() + style.slice(1)}
                   {isPrimary && (
-                    <span 
- className="text-xs bg-blue-600 text-white px-2 py-1 rounded-full">
+                    <span className="text-xs bg-blue-600 text-white px-2 py-1 rounded-full">
                       PREDOMINANTE
                     </span>
                   )}
                   {isSecondary && (
-               
-       <span className="text-xs bg-purple-600 text-white px-2 py-1 rounded-full">
+                    <span className="text-xs bg-purple-600 text-white px-2 py-1 rounded-full">
                       CO-PREDOMINANTE
                     </span>
                   )}
+                  {isMaxPercentage && (
+                    <span className="text-xs bg-yellow-400 text-gray-900 px-2 py-1 rounded-full">
+                      MAYOR BAREMO
+                    </span>
+                  )}
                 </CardTitle>
-             
-  </CardHeader>
+              </CardHeader>
               <CardContent>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="font-medium text-gray-700">Puntuación:</span>
                     <span className={`${colors.text} font-bold text-lg`}>{data.score}/20</span>
-  
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="font-medium text-gray-700">Nivel:</span>
                     <span className={`${colors.text} font-semibold`}>{data.description}</span>
                   </div>
- 
                   <div className="flex justify-between items-center">
                     <span className="font-medium text-gray-700">Distribución:</span>
                     <span className={`${colors.text} font-semibold`}>{data.percentage}</span>
                   </div>
-                  
- <Progress 
+                  <Progress 
                     value={(data.score / 20) * 100} 
                     className="h-2 mt-2"
                   />
                 </div>
               </CardContent>
-     
-        </Card>
+            </Card>
           )
         })}
       </div>
-
-      {/* Propuestas de Mejora según Estilo Predominante */}
-      <Card className="mt-8 bg-gradient-to-br from-blue-50 to-indigo-100 border-blue-200">
-        <CardHeader>
-          <CardTitle className="text-2xl text-blue-800 flex items-center gap-2">
-            <TrendingUp className="h-6 w-6" />
-       
-       Propuestas para la Mejora de tu Estilo de Enseñanza
-          </CardTitle>
-          <CardDescription className="text-blue-600 text-base">
-            {dominantStyleInfo.isCombined ?
- (
-              <>Metodologías activas recomendadas para el estilo híbrido {dominantStyle.charAt(0).toUpperCase() + dominantStyle.slice(1)} - {dominantStyleInfo.secondary!.charAt(0).toUpperCase() + dominantStyleInfo.secondary!.slice(1)}</>
-            ) : (
-              <>Metodologías activas recomendadas para el estilo {dominantStyle.charAt(0).toUpperCase() + dominantStyle.slice(1)}</>
-            )}
-          </CardDescription>
-        </CardHeader>
-       
-  <CardContent className="p-6">
-          <StyleImprovement 
-            primaryStyle={dominantStyleInfo.primary} 
-            secondaryStyle={dominantStyleInfo.secondary}
-            isCombined={dominantStyleInfo.isCombined}
-            primaryScore={styleScores[dominantStyleInfo.primary].score}
-            secondaryScore={dominantStyleInfo.secondary ?
- styleScores[dominantStyleInfo.secondary].score : 0}
-            primaryDescription={styleScores[dominantStyleInfo.primary].description}
-            secondaryDescription={dominantStyleInfo.secondary ?
- styleScores[dominantStyleInfo.secondary].description : ""}
-          />
-        </CardContent>
-      </Card>
-
-      <Card className="mt-8 bg-gray-50">
-        <CardContent className="p-6">
-          <h3 className="text-lg font-semibold mb-3 text-gray-800">Nota sobre el Baremo</h3>
-          <p className="text-sm text-gray-600">
-            Los resultados se basan en el baremo actualizado creado a partir de las respuestas 
- de la población 
-            docente que imparte la materia de algoritmos.
- Las puntuaciones están distribuidas según percentiles 
- que reflejan la preferencia relativa de cada estilo de enseñanza en esta población específica.
- </p>
-        </CardContent>
-      </Card>
 
       <div className="mt-8 text-center">
         <Button 
@@ -907,8 +535,7 @@ function ResultsPage({ answers, questions }: { answers: Answer[], questions: Que
         >
           ← Realizar Nueva Evaluación
         </Button>
-     
-  </div>
+      </div>
     </div>
   )
 }
